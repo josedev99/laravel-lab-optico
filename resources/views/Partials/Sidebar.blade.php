@@ -91,7 +91,7 @@
             </a>
         </li><!-- End F.A.Q Page Nav -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="users-profile.html">
+            <a class="nav-link collapsed" href="{{ route('user.index') }}">
                 <i class="bi bi-people"></i>
                 <span>Usuario</span>
             </a>
