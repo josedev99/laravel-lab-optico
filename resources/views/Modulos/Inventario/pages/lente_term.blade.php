@@ -14,6 +14,7 @@
 @endsection
 @section('content')
 @include('Modulos.Inventario.modal.nuevo_lente')
+@include('Modulos.Inventario.modal.ing_stock_lente_term')
     <div class="card p-1 m-0">
         <div class="card-header p-1">
             <button id="btn_nuevo_lente" class="btn btn-outline-success btn-sm">Nuevo lente <i class="bi bi-plus-circle"></i></button>

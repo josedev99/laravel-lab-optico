@@ -25,6 +25,22 @@ document.addEventListener('DOMContentLoaded', async(e) => {
                 console.log(response);
             })
         }
+        //Procesar ingreso de lente terminado
+        let formIngLenteTerm = document.getElementById("form-ing-lente-term");
+        if (formIngLenteTerm) {
+            formIngLenteTerm.addEventListener('submit', async(e) => {
+                e.preventDefault();
+                let formData = new FormData(formIngLenteTerm);
+                formData.append('lente_term_id', sessionStorage.getItem('lente_term_id'));
+                let response = await axios.post(route('lente.term.ingreso'), formData);
+                if (response.data.status === 'success') {
+                    $("#modal-stock-lente-term").modal('hide');
+                } else {
+
+                }
+                console.log(response);
+            })
+        }
     } catch (err) {
         console.log(err)
     }
@@ -77,7 +93,7 @@ function createTabLenteTerminados(data) {
 
             let tableHTML = `
                 <div class="tab-pane fade" id="${bordered_tab}" role="tabpanel" aria-labelledby="${element_tab}">
-                    <table style="width:100%;border-collapse: collapse;text-align:center">
+                    <table style="width:100%;border-collapse: collapse;text-align:center;font-size: 13px">
                         <thead>
                             <tr>
                                 <th style="border: 1px solid rgb(155, 148, 148)">Esf/Cil</th>
@@ -96,9 +112,10 @@ function createTabLenteTerminados(data) {
 
             // Generar filas de esferas
             for (let esf = esf_hasta; esf >= esf_desde; esf -= 0.25) {
-                tableHTML += `<tr><th style="border: 1px solid rgb(155, 148, 148)">${esf.toFixed(2)}</th>`;
+                let valores = (parseFloat(esf) > 0) ? '+' + esf.toFixed(2) : esf.toFixed(2);
+                tableHTML += `<tr><th style="border: 1px solid rgb(155, 148, 148)">${valores}</th>`;
                 for (let cil = cil_desde; cil <= cil_hasta; cil += 0.25) {
-                    tableHTML += `<td style="border: 1px solid rgb(155, 148, 148)">0</td>`; // Puedes reemplazar '1' con datos dinámicos si es necesario
+                    tableHTML += `<td onclick="addLenteTerm(this)" data-id="${element.id}" data-marca="${element.marca}" data-diseno="${element.diseno}" data-nombre="${element.nombre}" style="border: 1px solid rgb(155, 148, 148)">0</td>`; // Puedes reemplazar '1' con datos dinámicos si es necesario
                 }
                 tableHTML += `</tr>`;
             }
@@ -116,108 +133,21 @@ function createTabLenteTerminados(data) {
     }
 }
 
+function addLenteTerm(cell) {
+    let { id, marca, diseno, nombre } = cell.dataset;
+    document.getElementById('marca_lente_term').value = marca;
+    document.getElementById('diseno_lente_term').value = diseno;
+    sessionStorage.setItem('lente_term_id', id);
 
-function createTabLenteTerminadossss(data) {
-    let tabs_lentes_term = document.getElementById('tabs_lentes_term');
-    if (tabs_lentes_term) {
-        tabs_lentes_term.innerHTML = '';
-        let cardBody = document.createElement('div');
-        cardBody.classList.add('card-body', 'p-1');
-        let ul = document.createElement('ul');
-        data.forEach((element) => {
-            let element_tab = 'tab-' + element.id;
-            let bordered_tab = 'bordered-' + element.id;
-            let esf_desde = '-4.00';
-            let esf_hasta = '+4.00';
-            let cil_desde = '-3.00';
-            let cil_hasta = '0.00';
+    const row = cell.parentElement; // Fila de la celda
+    const table = row.parentElement.parentElement; // Tabla completa
 
-            ul.classList.add('nav', 'nav-tabs', 'nav-tabs-bordered');
-            ul.role = 'role="tablist"';
-            ul.innerHTML += `
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="${element_tab}" data-bs-toggle="tab" data-bs-target="#${bordered_tab}" type="button" role="tab" aria-controls="home" aria-selected="true">${element.nombre}</button>
-                </li>
-            `;
-            cardBody.appendChild(ul);
-            let tab_content = document.createElement('div');
-            tab_content.classList.add('tab-content', 'pt-2');
-            tab_content.innerHTML += `
-            <div class="tab-pane fade" id="${bordered_tab}" role="tabpanel" aria-labelledby="${element_tab}">
-                        <table border="1">
-                            <thead>
-                                <tr>
-                                    <th>Esf/Cil</th>
-                                    <!-- Columnas de cilindros -->
-                                    <th>0.00</th>
-                                    <th>-0.25</th>
-                                    <th>-0.50</th>
-                                    <th>-0.75</th>
-                                    <th>-1.00</th>
-                                    <th>-1.25</th>
-                                    <th>-1.50</th>
-                                    <th>-1.75</th>
-                                    <th>-2.00</th>
-                                    <th>-2.25</th>
-                                    <th>-2.50</th>
-                                    <th>-2.75</th>
-                                    <th>-3.00</th>
-                                    <th>-3.25</th>
-                                    <th>-3.50</th>
-                                    <th>-3.75</th>
-                                    <th>-4.00</th>
-                                    <th>-4.25</th>
-                                    <th>-4.50</th>
-                                    <th>-4.75</th>
-                                    <th>-5.00</th>
-                                    <th>-5.25</th>
-                                    <th>-5.50</th>
-                                    <th>-5.75</th>
-                                    <th>-6.00</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Filas de esferas -->
-                                <tr>
-                                    <th>+6.00</th>
-                                    <td>0</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <th>+5.75</th>
-                                    <!-- Rellena según sea necesario -->
-                                </tr>
-                                <!-- Agrega más filas aquí para las demás esferas -->
-                            </tbody>
-                        </table>
-                        </div>
-            `;
+    const cellIndex = Array.from(row.cells).indexOf(cell);
+    const rowTitle = row.querySelector('th').innerText;
+    const colTitle = table.querySelector(`thead tr th:nth-child(${cellIndex + 1})`).innerText;
 
-            cardBody.appendChild(tab_content);
+    document.getElementById('esfera_lente').value = rowTitle;
+    document.getElementById('cilindro_lente').value = colTitle;
 
-            tabs_lentes_term.appendChild(cardBody);
-        });
-    }
+    $("#modal-stock-lente-term").modal('show');
 }

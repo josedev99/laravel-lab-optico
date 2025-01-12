@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ExistenciaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\LenteTermController;
@@ -15,6 +16,8 @@ Route::prefix('/inventario')->group(function(){
     //Lentes terminados
     Route::post('lente-terminados',[LenteTermController::class,'lente_term_save'])->name('lente.term.save');
     Route::post('obtener-lentes-terminados',[LenteTermController::class,'getLenteTerm'])->name('lente.term.getAll');
+    //Ingreso a inventario
+    Route::post('ingreso-lentes-terminados',[ExistenciaController::class,'ingStockLenteTerm'])->name('lente.term.ingreso');
 });
 
 Route::prefix('/usuario')->group(function(){
