@@ -61,15 +61,7 @@ class LenteTermController extends Controller
             // Obtener los datos de stock
             $stocks = DB::select("SELECT e.esfera, e.cilindro, SUM(e.stock) AS stock FROM existencias AS e WHERE e.lente_term_id = ? GROUP BY e.esfera, e.cilindro", [$item['id']]);
     
-            // Transformar el resultado en un mapa anidado
-            $stockMap = [];
-            foreach ($stocks as $stock) {
-                $esfera = number_format($stock->esfera, 2);
-                $cilindro = number_format($stock->cilindro, 2);
-                $stockMap[$esfera][$cilindro] = (int) $stock->stock;
-            }
-    
-            $array['stocks'] = $stockMap;
+            $array['stocks'] = $stocks;
             $stock_term[] = $array;
         }
     

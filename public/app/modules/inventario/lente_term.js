@@ -101,23 +101,36 @@ function createTabLenteTerminados(data) {
 
             // Generar columnas de cilindros
             for (let cil = cil_hasta; cil_desde <= cil; cil -= 0.25) {
-                tableHTML += `<th style="border: 1px solid rgb(155, 148, 148)">${cil.toFixed(2)}</th>`;
+                let val_cil = (parseFloat(cil) > 0) ? '+' + cil.toFixed(2) : cil.toFixed(2);
+                tableHTML += `<th style="border: 1px solid rgb(155, 148, 148)">${val_cil}</th>`;
             }
 
-            tableHTML += `
-                            </tr>
+            tableHTML += `  </tr>
                         </thead>
-                        <tbody>
-            `;
+                        <tbody>`;
 
             // Generar filas de esferas
             for (let esf = esf_hasta; esf >= esf_desde; esf -= 0.25) {
-                let valores = (parseFloat(esf) > 0) ? '+' + esf.toFixed(2) : esf.toFixed(2);
-                tableHTML += `<tr><th style="border: 1px solid rgb(155, 148, 148)">${valores}</th>`;
-                for (let cil = cil_desde; cil <= cil_hasta; cil += 0.25) {
-                    tableHTML += `<td onclick="addLenteTerm(this)" data-id="${element.id}" data-marca="${element.marca}" data-diseno="${element.diseno}" data-nombre="${element.nombre}" style="border: 1px solid rgb(155, 148, 148)">0</td>`; // Puedes reemplazar '1' con datos dinámicos si es necesario
+                let val_esf = (parseFloat(esf) > 0) ? '+' + esf.toFixed(2) : esf.toFixed(2);
+
+                for (let cil = cil_hasta; cil_desde <= cil; cil -= 0.25) {
+                    let val_cil = (parseFloat(cil) > 0) ? '+' + cil.toFixed(2) : cil.toFixed(2);
+
+                    if (parseFloat(val_cil) == 0) {
+                        tableHTML += `<tr><th style="border: 1px solid rgb(155, 148, 148)">${val_esf}</th>`;
+                    }
+                    let stocks = element.stocks;
+                    let searchLenteTerm = stocks.find((stock) => parseFloat(stock.esfera) === parseFloat(val_esf) && parseFloat(stock.cilindro) === parseFloat(val_cil));
+                    let stock_actual = 0;
+                    if (searchLenteTerm) {
+                        stock_actual = parseInt(searchLenteTerm.stock);
+                    }
+                    tableHTML += `<td onclick="addLenteTerm(this)" data-id="${element.id}" data-marca="${element.marca}" data-diseno="${element.diseno}" data-nombre="${element.nombre}" data-esfera="${val_esf}" data-cilindro="${val_cil}" style="border: 1px solid rgb(155, 148, 148)">${stock_actual}</td>`;
+
+                    if (parseFloat(val_cil) === parseFloat(cil_desde)) {
+                        tableHTML += `</tr>`;
+                    }
                 }
-                tableHTML += `</tr>`;
             }
 
             tableHTML += `
@@ -134,20 +147,12 @@ function createTabLenteTerminados(data) {
 }
 
 function addLenteTerm(cell) {
-    let { id, marca, diseno, nombre } = cell.dataset;
+    let { id, marca, diseno, nombre, esfera, cilindro } = cell.dataset;
     document.getElementById('marca_lente_term').value = marca;
     document.getElementById('diseno_lente_term').value = diseno;
     sessionStorage.setItem('lente_term_id', id);
-
-    const row = cell.parentElement; // Fila de la celda
-    const table = row.parentElement.parentElement; // Tabla completa
-
-    const cellIndex = Array.from(row.cells).indexOf(cell);
-    const rowTitle = row.querySelector('th').innerText;
-    const colTitle = table.querySelector(`thead tr th:nth-child(${cellIndex + 1})`).innerText;
-
-    document.getElementById('esfera_lente').value = rowTitle;
-    document.getElementById('cilindro_lente').value = colTitle;
+    document.getElementById('esfera_lente').value = esfera;
+    document.getElementById('cilindro_lente').value = cilindro;
 
     $("#modal-stock-lente-term").modal('show');
 }
