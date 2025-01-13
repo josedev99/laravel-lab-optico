@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ExistenciaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventarioController;
@@ -9,9 +10,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/',[HomeController::class,'index'])->name('app.home');
 //Login
+Route::get('/login',[LoginController::class,'index'])->name('app.login.index');
+Route::post('/authUser',[LoginController::class,'login'])->name('app.login.auth');
 
 //Routas para inventario
-Route::prefix('/inventario')->group(function(){
+Route::prefix('/inventario')->middleware('auth')->group(function(){
     Route::get('/', [InventarioController::class, 'index'])->name('inv.index');
     //Lentes terminados
     Route::post('lente-terminados',[LenteTermController::class,'lente_term_save'])->name('lente.term.save');
@@ -20,7 +23,7 @@ Route::prefix('/inventario')->group(function(){
     Route::post('ingreso-lentes-terminados',[ExistenciaController::class,'ingStockLenteTerm'])->name('lente.term.ingreso');
 });
 
-Route::prefix('/usuario')->group(function(){
+Route::prefix('/usuario')->middleware('auth')->group(function(){
     Route::get('/', [UserController::class, 'index'])->name('user.index');
     Route::post('/save', [UserController::class, 'save'])->name('user.save');
 });

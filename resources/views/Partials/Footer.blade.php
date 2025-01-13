@@ -28,7 +28,7 @@
     window.axios = axios;
 </script>
 <!-- Template Main JS File -->
-<script src="assets/js/main.js"></script>
+<script src="{{ asset('assets/js/main.js') }}"></script>
 @routes
 
 @stack('scripts')
