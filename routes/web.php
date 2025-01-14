@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\LenteTermController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VentasController;
 use Illuminate\Support\Facades\Route;
 
 //Login
@@ -26,4 +27,10 @@ Route::prefix('/inventario')->middleware('auth')->group(function(){
 Route::prefix('/usuario')->middleware('auth')->group(function(){
     Route::get('/', [UserController::class, 'index'])->name('user.index');
     Route::post('/save', [UserController::class, 'save'])->name('user.save');
+});
+
+//Ventas
+Route::prefix('venta')->middleware('auth')->group(function(){
+    Route::get('/laboratorio', [VentasController::class, 'index'])->name('venta.lab.index');
+    Route::post('/lab/save', [VentasController::class, 'save'])->name('venta.lab.save');
 });
