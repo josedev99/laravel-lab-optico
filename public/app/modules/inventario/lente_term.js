@@ -14,15 +14,47 @@ document.addEventListener('DOMContentLoaded', async(e) => {
             FormLenteTerm.addEventListener('submit', async(e) => {
                 e.preventDefault();
                 let form_data = new FormData(FormLenteTerm);
+                //validaciones
+                for ([key, value] of form_data.entries()) {
+                    let input = document.querySelector(`input[name="${key}"]`);
+                    if (value.trim() === '') {
+                        input.classList.add('input-error');
+                        Swal.fire({
+                            title: "Aviso",
+                            text: `El campo ${input.title} es obligatorio.`,
+                            icon: "warning"
+                        });
+                        return;
+                    } else {
+                        input.classList.remove('input-error');
+                    }
+                }
                 let response = await axios.post(route('lente.term.save'), form_data);
                 if (response.status === 200) {
                     if (response.data.status === 'success') {
+                        getLentesTerminados();
                         $("#modal-nuevo-lente").modal('hide')
+                        FormLenteTerm.reset();
+                        Swal.fire({
+                            title: "Éxito",
+                            text: "Se ha registrado exitosamente el inventario.",
+                            icon: "success"
+                        });
                     } else {
-
+                        Swal.fire({
+                            title: "Aviso",
+                            text: "Ha ocurrido un error al registrar el inventario.",
+                            icon: "warning"
+                        });
                     }
+                } else {
+                    console.log(response)
+                    Swal.fire({
+                        title: "Error",
+                        text: "Ha ocurrido un error inesperado.",
+                        icon: "error"
+                    });
                 }
-                console.log(response);
             })
         }
         //Procesar ingreso de lente terminado
@@ -31,14 +63,39 @@ document.addEventListener('DOMContentLoaded', async(e) => {
             formIngLenteTerm.addEventListener('submit', async(e) => {
                 e.preventDefault();
                 let formData = new FormData(formIngLenteTerm);
+                //validaciones
+                for ([key, value] of formData.entries()) {
+                    let input = document.querySelector(`input[name="${key}"]`);
+                    if (value.trim() === '') {
+                        input.classList.add('input-error');
+                        Swal.fire({
+                            title: "Aviso",
+                            text: `El campo ${input.title} es obligatorio.`,
+                            icon: "warning"
+                        });
+                        return;
+                    } else {
+                        input.classList.remove('input-error');
+                    }
+                }
                 formData.append('lente_term_id', sessionStorage.getItem('lente_term_id'));
                 let response = await axios.post(route('lente.term.ingreso'), formData);
                 if (response.data.status === 'success') {
+                    getLentesTerminados();
                     $("#modal-stock-lente-term").modal('hide');
+                    formIngLenteTerm.reset();
+                    Swal.fire({
+                        title: "Éxito",
+                        text: response.data.message,
+                        icon: "success"
+                    });
                 } else {
-
+                    Swal.fire({
+                        title: "Error",
+                        text: response.data.message,
+                        icon: "error"
+                    });
                 }
-                console.log(response);
             })
         }
     } catch (err) {
@@ -49,7 +106,6 @@ document.addEventListener('DOMContentLoaded', async(e) => {
 async function getLentesTerminados() {
     let response = await axios.post(route('lente.term.getAll'));
     createTabLenteTerminados(response.data);
-    console.log(response);
 }
 
 function createTabLenteTerminados(data) {
@@ -70,7 +126,7 @@ function createTabLenteTerminados(data) {
             // Crear pestaña
             ul.innerHTML += `
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="${element_tab}" data-bs-toggle="tab" data-bs-target="#${bordered_tab}" type="button" role="tab" aria-controls="${bordered_tab}" aria-selected="false">${element.nombre}</button>
+                    <button class="nav-link" onclick="setActivePanel(this)" id="${element_tab}" data-bs-toggle="tab" data-bs-target="#${bordered_tab}" type="button" role="tab" aria-controls="${bordered_tab}" data-keyElement="${bordered_tab}" aria-selected="false">${element.nombre}</button>
                 </li>
             `;
         });
@@ -143,6 +199,7 @@ function createTabLenteTerminados(data) {
             cardBody.appendChild(tab_content);
         });
         tabs_lentes_term.appendChild(cardBody);
+        activeTabPanel();
     }
 }
 
@@ -155,4 +212,19 @@ function addLenteTerm(cell) {
     document.getElementById('cilindro_lente').value = cilindro;
 
     $("#modal-stock-lente-term").modal('show');
+}
+
+function setActivePanel(element) {
+    let keyElement = element.dataset.keyelement;
+    sessionStorage.setItem('btn_tab_panel_id', element.id);
+    sessionStorage.setItem('keyElemetTabPanel', keyElement);
+}
+
+function activeTabPanel() {
+    let keyElemetTabPanel = sessionStorage.getItem('keyElemetTabPanel');
+    let btn_tab_panel_id = sessionStorage.getItem('btn_tab_panel_id');
+
+    document.querySelector(`#${keyElemetTabPanel}`).classList.add('active', 'show');
+    document.querySelector(`#${btn_tab_panel_id}`).classList.add('active');
+    document.querySelector(`#${btn_tab_panel_id}`).setAttribute('aria-selected', true);
 }

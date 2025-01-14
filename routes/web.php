@@ -8,11 +8,11 @@ use App\Http\Controllers\LenteTermController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/',[HomeController::class,'index'])->name('app.home');
 //Login
 Route::get('/login',[LoginController::class,'index'])->name('app.login.index');
 Route::post('/authUser',[LoginController::class,'login'])->name('app.login.auth');
 
+Route::get('/',[HomeController::class,'index'])->middleware('auth')->name('app.home');
 //Routas para inventario
 Route::prefix('/inventario')->middleware('auth')->group(function(){
     Route::get('/', [InventarioController::class, 'index'])->name('inv.index');

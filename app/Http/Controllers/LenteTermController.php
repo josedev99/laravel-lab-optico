@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\InvLenteTermRequest;
 use App\Models\LenteTerm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -9,9 +10,11 @@ use Illuminate\Support\Facades\DB;
 
 class LenteTermController extends Controller
 {
-    public function lente_term_save(){
-        $request = request()->all();
+    public function lente_term_save(InvLenteTermRequest $req){
         $usuario_id = Auth::check() ? Auth::user()->id : 0;
+        //validacion de campos
+        $request = $req->validated();
+
         $exists_lente = LenteTerm::where('nombre',$request['nombre_lente'])->where('marca',$request['marca_lente'])->where('diseno',$request['diseno_lente'])->exists();
         if($exists_lente){
             return response()->json([
@@ -19,6 +22,7 @@ class LenteTermController extends Controller
                 'message' => 'EL lente terminado ya se encuentra registrado.'
             ]);
         }
+
         $result = LenteTerm::create([
             'nombre' => $request['nombre_lente'],
             'marca' => $request['marca_lente'],

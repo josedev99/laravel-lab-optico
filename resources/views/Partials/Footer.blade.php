@@ -24,6 +24,7 @@
 
 <script src="{{ asset('assets/vendor/selectize/selectize.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/axios/axios.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/sweetalert2/sweetalert2.all.min.js') }}"></script>
 <script>
     window.axios = axios;
 </script>
