@@ -16,7 +16,7 @@
             <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{route('inv.index')}}">
-                        <i class="bi bi-circle"></i><span>Stock</span>
+                        <i class="bi bi-circle"></i><span>Stock terminados</span>
                     </a>
                 </li>
                 <li>

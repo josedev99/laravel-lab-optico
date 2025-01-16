@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ExistenciaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventarioController;
@@ -33,4 +34,5 @@ Route::prefix('/usuario')->middleware('auth')->group(function(){
 Route::prefix('venta')->middleware('auth')->group(function(){
     Route::get('/laboratorio', [VentasController::class, 'index'])->name('venta.lab.index');
     Route::post('/lab/save', [VentasController::class, 'save'])->name('venta.lab.save');
+    Route::post('/listar-clientes', [ClienteController::class, 'getClientes'])->name('venta.lab.clientes');
 });

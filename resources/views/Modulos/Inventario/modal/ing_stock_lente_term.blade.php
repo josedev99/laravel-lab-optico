@@ -89,6 +89,12 @@
                                     <label class="input-label">Cantidad</label>
                                 </div>
                             </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="content-input">
+                                    <input type="number" title="Precio de venta" name="precio_venta_term" placeholder=" " step=".01" class="input">
+                                    <label class="input-label">Precio venta</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer p-1 d-flex justify-content-end">

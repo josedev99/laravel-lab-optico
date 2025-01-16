@@ -15,11 +15,13 @@ class ExistenciaController extends Controller
         $esfera_lente = request()->get('esfera_lente');
         $cilindro_lente = request()->get('cilindro_lente');
         $lente_term_id = (int)request()->get('lente_term_id');
+        $precio_venta_term = (float)request()->get('precio_venta_term');
 
         $result = Existencia::create([
             'codigo' => $codigo,
             'categoria' => 'Lente Term',
             'stock' => $cantidad,
+            'precio_venta' => $precio_venta_term,
             'esfera' => $esfera_lente,
             'cilindro' => $cilindro_lente,
             'lente_term_id' => $lente_term_id,
