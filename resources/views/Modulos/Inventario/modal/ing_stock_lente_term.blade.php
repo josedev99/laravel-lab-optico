@@ -11,7 +11,7 @@
         width: 100%;
         border-radius: 6px;
         border: 1px solid #9e9e9e;
-        padding: .6rem 1.4rem;
+        padding: .4rem 1.4rem;
         outline: none;
     }
     .input:focus-visible{
