@@ -15,7 +15,11 @@ class LenteTermController extends Controller
         //validacion de campos
         $request = $req->validated();
 
-        $exists_lente = LenteTerm::where('nombre',$request['nombre_lente'])->where('marca',$request['marca_lente'])->where('diseno',$request['diseno_lente'])->exists();
+        $nombre_tabla = strtoupper(trim($request['nombre_lente']));
+        $marca = strtoupper(trim($request['marca_lente']));
+        $diseno = strtoupper(trim($request['diseno_lente']));
+
+        $exists_lente = LenteTerm::where('nombre',$nombre_tabla)->where('marca',$marca)->where('diseno',$diseno)->exists();
         if($exists_lente){
             return response()->json([
                 'status' => 'warning',
@@ -24,9 +28,9 @@ class LenteTermController extends Controller
         }
 
         $result = LenteTerm::create([
-            'nombre' => $request['nombre_lente'],
-            'marca' => $request['marca_lente'],
-            'diseno' => $request['diseno_lente'],
+            'nombre' => $nombre_tabla,
+            'marca' => $marca,
+            'diseno' => $diseno,
             'esf_desde' => $request['esf_desde'],
             'cil_desde' => $request['cil_desde'],
             'esf_hasta' => $request['esf_hasta'],
@@ -63,7 +67,7 @@ class LenteTermController extends Controller
             ];
     
             // Obtener los datos de stock
-            $stocks = DB::select("SELECT e.esfera, e.cilindro, SUM(e.stock) AS stock FROM existencias AS e WHERE e.lente_term_id = ? GROUP BY e.esfera, e.cilindro", [$item['id']]);
+            $stocks = DB::select("SELECT e.codigo,e.esfera, e.cilindro, SUM(e.stock) AS stock FROM existencias AS e WHERE e.lente_term_id = ? GROUP BY e.esfera, e.cilindro", [$item['id']]);
     
             $array['stocks'] = $stocks;
             $stock_term[] = $array;

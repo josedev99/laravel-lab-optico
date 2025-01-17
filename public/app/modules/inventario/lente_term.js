@@ -178,10 +178,12 @@ function createTabLenteTerminados(data) {
                     let stocks = element.stocks;
                     let searchLenteTerm = stocks.find((stock) => parseFloat(stock.esfera) === parseFloat(val_esf) && parseFloat(stock.cilindro) === parseFloat(val_cil));
                     let stock_actual = 0;
+                    let codigo = '';
                     if (searchLenteTerm) {
+                        codigo = searchLenteTerm.codigo;
                         stock_actual = parseInt(searchLenteTerm.stock);
                     }
-                    tableHTML += `<td onclick="addLenteTerm(this)" data-id="${element.id}" data-marca="${element.marca}" data-diseno="${element.diseno}" data-nombre="${element.nombre}" data-esfera="${val_esf}" data-cilindro="${val_cil}" style="border: 1px solid rgb(155, 148, 148)">${stock_actual}</td>`;
+                    tableHTML += `<td onclick="addLenteTerm(this)" data-id="${element.id}" data-codigo="${codigo}" data-marca="${element.marca}" data-diseno="${element.diseno}" data-nombre="${element.nombre}" data-esfera="${val_esf}" data-cilindro="${val_cil}" style="border: 1px solid rgb(155, 148, 148)">${stock_actual}</td>`;
 
                     if (parseFloat(val_cil) === parseFloat(cil_desde)) {
                         tableHTML += `</tr>`;
@@ -204,7 +206,8 @@ function createTabLenteTerminados(data) {
 }
 
 function addLenteTerm(cell) {
-    let { id, marca, diseno, nombre, esfera, cilindro } = cell.dataset;
+    let { id, marca, diseno, nombre, esfera, cilindro, codigo } = cell.dataset;
+    document.getElementById('codigo_lente_term').value = codigo;
     document.getElementById('marca_lente_term').value = marca;
     document.getElementById('diseno_lente_term').value = diseno;
     sessionStorage.setItem('lente_term_id', id);

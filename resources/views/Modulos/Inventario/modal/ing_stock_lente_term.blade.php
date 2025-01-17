@@ -12,7 +12,7 @@
                         <div class="row">
                             <div class="col-sm-12 col-md-4">
                                 <div class="content-input">
-                                    <input type="text" title="código lente" name="codigo_lente_term" placeholder=" " class="input">
+                                    <input type="text" title="código lente" name="codigo_lente_term" id="codigo_lente_term" placeholder=" " class="input">
                                     <label class="input-label">Código</label>
                                 </div>
                             </div>

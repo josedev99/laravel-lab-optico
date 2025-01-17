@@ -17,6 +17,7 @@ class ExistenciaController extends Controller
         $lente_term_id = (int)request()->get('lente_term_id');
         $precio_venta_term = (float)request()->get('precio_venta_term');
 
+        //validar ingreso
         $result = Existencia::create([
             'codigo' => $codigo,
             'categoria' => 'Lente Term',
