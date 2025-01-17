@@ -35,4 +35,5 @@ Route::prefix('venta')->middleware('auth')->group(function(){
     Route::get('/laboratorio', [VentasController::class, 'index'])->name('venta.lab.index');
     Route::post('/lab/save', [VentasController::class, 'save'])->name('venta.lab.save');
     Route::post('/listar-clientes', [ClienteController::class, 'getClientes'])->name('venta.lab.clientes');
+    Route::post('/listar-productos', [VentasController::class, 'getProductosAll'])->name('venta.lab.productos');
 });

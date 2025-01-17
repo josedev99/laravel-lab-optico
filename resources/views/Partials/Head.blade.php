@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/selectize/selectize.bootstrap5.css') }}">
     <!-- Template Main CSS File -->
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/input.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/vendor/sweetalert2/sweetalert2.all.min.css') }}">
     @stack('styles')
 </head>
