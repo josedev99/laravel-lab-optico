@@ -83,7 +83,7 @@
                         </div>
                     </div>
                     <div class="card-footer p-1 d-flex justify-content-end">
-                        <button type="submit" class="btn btn-secondary btn-sm">Registrar</button>
+                        <button type="submit" id="btnSaveNewTabla" class="btn btn-secondary btn-sm"><i class="bi bi-floppy2"></i> Registrar</button>
                     </div>
                 </div>
             </form>

@@ -67,7 +67,7 @@ class LenteTermController extends Controller
             ];
     
             // Obtener los datos de stock
-            $stocks = DB::select("SELECT e.codigo,e.esfera, e.cilindro, SUM(e.stock) AS stock FROM existencias AS e WHERE e.lente_term_id = ? GROUP BY e.esfera, e.cilindro", [$item['id']]);
+            $stocks = DB::select("SELECT e.codigo,e.esfera, e.cilindro, SUM(e.stock) AS stock,precio_costo,precio_venta FROM existencias AS e WHERE e.lente_term_id = ? GROUP BY e.esfera, e.cilindro", [$item['id']]);
     
             $array['stocks'] = $stocks;
             $stock_term[] = $array;

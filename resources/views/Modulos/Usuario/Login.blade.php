@@ -47,25 +47,24 @@
                 <div class="card-body">
 
                   <div class="pt-4 pb-2">
-                    <h5 class="card-title text-center pb-0 fs-4">Ingresar</h5>
+                    <h5 class="card-title text-center p-0 fs-4" style="font-size: 18px">Ingresar</h5>
                   </div>
 
                   <form class="row g-3 needs-validation" action="{{ route('app.login.auth') }}" method="POST">
                     @csrf
 
                     <div class="col-12">
-                      <label for="yourUsername" class="form-label">Usuario</label>
                       <div class="input-group has-validation">
-                        <span class="input-group-text" id="inputGroupPrepend">User</span>
-                        <input type="text" name="usuario" class="form-control" id="usuario" required>
-                        <div class="invalid-feedback">Ingrese su usuario</div>
+                        <input type="text" name="usuario" class="form-control" id="usuario" placeholder="Usuario" required>
+                        <span class="input-group-text" id="inputGroupPrepend"><i class="bi bi-person-circle"></i></span>
                       </div>
                     </div>
 
                     <div class="col-12">
-                      <label for="yourPassword" class="form-label">Clave</label>
-                      <input type="password" name="clave_user" class="form-control" id="clave_user" required>
-                      <div class="invalid-feedback">Ingrese su clave</div>
+                      <div class="input-group has-validation">
+                        <input type="text" name="clave_user" class="form-control" id="clave_user" placeholder="Clave" required>
+                        <span class="input-group-text" id="clave_user"><i class="bi bi-key-fill"></i></span>
+                      </div>
                     </div>
                     <div class="col-12">
                       <button class="btn btn-primary w-100 btn-sm" type="submit">Login</button>

@@ -13,6 +13,7 @@ class Existencia extends Model
         'categoria',
         'stock',
         'stock_min',
+        'precio_costo',
         'precio_venta',
         'esfera',
         'cilindro',

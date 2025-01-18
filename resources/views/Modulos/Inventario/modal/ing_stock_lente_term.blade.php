@@ -30,13 +30,13 @@
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="content-input">
-                                    <input type="text" title="esfera" name="esfera_lente" id="esfera_lente" placeholder=" " class="input">
+                                    <input type="text" readonly title="esfera" name="esfera_lente" id="esfera_lente" placeholder=" " class="input">
                                     <label class="input-label">Esfera</label>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="content-input">
-                                    <input type="text" title="cilindro" name="cilindro_lente" id="cilindro_lente" placeholder=" " class="input">
+                                    <input type="text" readonly title="cilindro" name="cilindro_lente" id="cilindro_lente" placeholder=" " class="input">
                                     <label class="input-label">Cilindro</label>
                                 </div>
                             </div>
@@ -49,14 +49,20 @@
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="content-input">
-                                    <input type="number" title="Precio de venta" name="precio_venta_term" placeholder=" " step=".01" class="input">
-                                    <label class="input-label">Precio venta</label>
+                                    <input type="number" title="precio de costo" name="precio_costo_term" id="precio_costo_term" placeholder=" " step=".01" class="input">
+                                    <label class="input-label">Precio de costo</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="content-input">
+                                    <input type="number" title="precio de venta" name="precio_venta_term" id="precio_venta_term" placeholder=" " step=".01" class="input">
+                                    <label class="input-label">Precio de venta</label>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="card-footer p-1 d-flex justify-content-end">
-                        <button type="submit" class="btn btn-secondary btn-sm">Registrar</button>
+                        <button type="submit" id="btnSaveStockLenteTerms" class="btn btn-secondary btn-sm"><i class="bi bi-floppy2"></i> Registrar</button>
                     </div>
                 </div>
             </form>

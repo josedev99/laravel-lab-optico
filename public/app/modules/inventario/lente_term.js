@@ -29,32 +29,49 @@ document.addEventListener('DOMContentLoaded', async(e) => {
                         input.classList.remove('input-error');
                     }
                 }
-                let response = await axios.post(route('lente.term.save'), form_data);
-                if (response.status === 200) {
-                    if (response.data.status === 'success') {
-                        getLentesTerminados();
-                        $("#modal-nuevo-lente").modal('hide')
-                        FormLenteTerm.reset();
+                let btnSaveNewTabla = document.getElementById('btnSaveNewTabla');
+                btnSaveNewTabla.disabled = true;
+
+                axios.post(route('lente.term.save'), form_data)
+                    .then((response) => {
+                        if (response.status === 200) {
+                            if (response.data.status === 'success') {
+                                getLentesTerminados();
+                                $("#modal-nuevo-lente").modal('hide')
+                                FormLenteTerm.reset();
+                                Swal.fire({
+                                    title: "Éxito",
+                                    text: "Se ha registrado exitosamente el inventario.",
+                                    icon: "success"
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: "Aviso",
+                                    text: "Ha ocurrido un error al registrar el inventario.",
+                                    icon: "warning"
+                                });
+                            }
+                        } else {
+                            console.log(response)
+                            Swal.fire({
+                                title: "Error",
+                                text: "Ha ocurrido un error inesperado.",
+                                icon: "error"
+                            });
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err);
                         Swal.fire({
-                            title: "Éxito",
-                            text: "Se ha registrado exitosamente el inventario.",
-                            icon: "success"
+                            title: "Error",
+                            text: "Ha ocurrido un error inesperado.",
+                            icon: "error"
                         });
-                    } else {
-                        Swal.fire({
-                            title: "Aviso",
-                            text: "Ha ocurrido un error al registrar el inventario.",
-                            icon: "warning"
-                        });
-                    }
-                } else {
-                    console.log(response)
-                    Swal.fire({
-                        title: "Error",
-                        text: "Ha ocurrido un error inesperado.",
-                        icon: "error"
-                    });
-                }
+                    })
+                    .finally(() => {
+                        resetValidError();
+                        btnSaveNewTabla.disabled = false;
+                    })
             })
         }
         //Procesar ingreso de lente terminado
@@ -79,23 +96,39 @@ document.addEventListener('DOMContentLoaded', async(e) => {
                     }
                 }
                 formData.append('lente_term_id', sessionStorage.getItem('lente_term_id'));
-                let response = await axios.post(route('lente.term.ingreso'), formData);
-                if (response.data.status === 'success') {
-                    getLentesTerminados();
-                    $("#modal-stock-lente-term").modal('hide');
-                    formIngLenteTerm.reset();
-                    Swal.fire({
-                        title: "Éxito",
-                        text: response.data.message,
-                        icon: "success"
-                    });
-                } else {
-                    Swal.fire({
-                        title: "Error",
-                        text: response.data.message,
-                        icon: "error"
-                    });
-                }
+                let btnSaveStockLenteTerms = document.getElementById('btnSaveStockLenteTerms');
+                btnSaveStockLenteTerms.disabled = true;
+                axios.post(route('lente.term.ingreso'), formData)
+                    .then((response) => {
+                        if (response.data.status === 'success') {
+                            getLentesTerminados();
+                            $("#modal-stock-lente-term").modal('hide');
+                            formIngLenteTerm.reset();
+                            Swal.fire({
+                                title: "Éxito",
+                                text: response.data.message,
+                                icon: "success"
+                            });
+                        } else {
+                            Swal.fire({
+                                title: "Error",
+                                text: response.data.message,
+                                icon: "error"
+                            });
+                        }
+                    })
+                    .catch((err) => {
+                        Swal.fire({
+                            title: "Error",
+                            text: 'Ha ocurrido un error inesperado.',
+                            icon: "error"
+                        });
+                        console.log(err);
+                    })
+                    .finally(() => {
+                        btnSaveStockLenteTerms.disabled = false;
+                    })
+
             })
         }
     } catch (err) {
@@ -150,9 +183,9 @@ function createTabLenteTerminados(data) {
             let tableHTML = `
                 <div class="tab-pane fade" id="${bordered_tab}" role="tabpanel" aria-labelledby="${element_tab}">
                     <table style="width:100%;border-collapse: collapse;text-align:center;font-size: 13px">
-                        <thead>
+                        <thead style="background:#4a494f;color: #ffffff">
                             <tr>
-                                <th style="border: 1px solid rgb(155, 148, 148)">Esf/Cil</th>
+                                <th style="border: 1px solid rgb(155, 148, 148);width:5%">Esf/Cil</th>
             `;
 
             // Generar columnas de cilindros
@@ -173,17 +206,21 @@ function createTabLenteTerminados(data) {
                     let val_cil = (parseFloat(cil) > 0) ? '+' + cil.toFixed(2) : cil.toFixed(2);
 
                     if (parseFloat(val_cil) == 0) {
-                        tableHTML += `<tr><th style="border: 1px solid rgb(155, 148, 148)">${val_esf}</th>`;
+                        tableHTML += `<tr><th style="border: 1px solid rgb(155, 148, 148);background:#4a494f;color: #ffffff">${val_esf}</th>`;
                     }
                     let stocks = element.stocks;
                     let searchLenteTerm = stocks.find((stock) => parseFloat(stock.esfera) === parseFloat(val_esf) && parseFloat(stock.cilindro) === parseFloat(val_cil));
                     let stock_actual = 0;
                     let codigo = '';
+                    let precio_costo = '';
+                    let precio_venta = '';
                     if (searchLenteTerm) {
                         codigo = searchLenteTerm.codigo;
+                        precio_costo = parseFloat(searchLenteTerm.precio_costo).toFixed(2);
+                        precio_venta = parseFloat(searchLenteTerm.precio_venta).toFixed(2);
                         stock_actual = parseInt(searchLenteTerm.stock);
                     }
-                    tableHTML += `<td onclick="addLenteTerm(this)" data-id="${element.id}" data-codigo="${codigo}" data-marca="${element.marca}" data-diseno="${element.diseno}" data-nombre="${element.nombre}" data-esfera="${val_esf}" data-cilindro="${val_cil}" style="border: 1px solid rgb(155, 148, 148)">${stock_actual}</td>`;
+                    tableHTML += `<td onclick="addLenteTerm(this)" data-id="${element.id}" data-codigo="${codigo}" data-precio_costo="${precio_costo}" data-precio_venta="${precio_venta}" data-marca="${element.marca}" data-diseno="${element.diseno}" data-nombre="${element.nombre}" data-esfera="${val_esf}" data-cilindro="${val_cil}" style="border: 1px solid rgb(155, 148, 148)">${stock_actual}</td>`;
 
                     if (parseFloat(val_cil) === parseFloat(cil_desde)) {
                         tableHTML += `</tr>`;
@@ -206,15 +243,28 @@ function createTabLenteTerminados(data) {
 }
 
 function addLenteTerm(cell) {
-    let { id, marca, diseno, nombre, esfera, cilindro, codigo } = cell.dataset;
+    let { id, marca, diseno, nombre, esfera, cilindro, codigo, precio_costo, precio_venta } = cell.dataset;
     document.getElementById('codigo_lente_term').value = codigo;
     document.getElementById('marca_lente_term').value = marca;
     document.getElementById('diseno_lente_term').value = diseno;
     sessionStorage.setItem('lente_term_id', id);
     document.getElementById('esfera_lente').value = esfera;
     document.getElementById('cilindro_lente').value = cilindro;
+    document.getElementById('precio_costo_term').value = precio_costo;
+    document.getElementById('precio_venta_term').value = precio_venta;
 
+    //reset form
+    resetValidError();
     $("#modal-stock-lente-term").modal('show');
+}
+
+function resetValidError() {
+    let inputs = document.querySelectorAll('.input');
+    inputs.forEach((input) => {
+        if (input.classList.contains('input-error')) {
+            input.classList.remove('input-error')
+        }
+    });
 }
 
 function setActivePanel(element) {
