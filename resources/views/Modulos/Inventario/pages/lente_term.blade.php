@@ -20,9 +20,8 @@
             <button id="btn_nuevo_lente" class="btn btn-outline-success btn-sm">Crear tabla <i class="bi bi-plus-circle"></i></button>
         </div>
         <div class="card-body p-1">
-            <div class="card" id="tabs_lentes_term">
-                
-              </div>
+          <div class="accordion accordion-flush" id="tabs_lentes_term">
+          </div>
         </div>
     </div>
 @endsection

@@ -36,6 +36,11 @@
 .input:where(:focus, :not(:placeholder-shown))+.input-label {
     transform: translateY(-100%) translateX(-10%) scale(.9);
     background-color: #fff;
+    color: #1864c9;
+    font-size: 14px;
+    z-index: 2;
+    font-weight: 700;
+    font-family: Helvetica, sans-serif;
 }
 
 .input-error {

@@ -23,6 +23,7 @@ Route::prefix('/inventario')->middleware('auth')->group(function(){
     Route::post('obtener-lentes-terminados',[LenteTermController::class,'getLenteTerm'])->name('lente.term.getAll');
     //Ingreso a inventario
     Route::post('ingreso-lentes-terminados',[ExistenciaController::class,'ingStockLenteTerm'])->name('lente.term.ingreso');
+    Route::post('obtener-datos-tabla',[LenteTermController::class,'getTableId'])->name('table.obtener');
 });
 
 Route::prefix('/usuario')->middleware('auth')->group(function(){

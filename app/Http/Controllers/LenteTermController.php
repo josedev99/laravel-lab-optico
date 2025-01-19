@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\InvLenteTermRequest;
 use App\Models\LenteTerm;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 
 class LenteTermController extends Controller
@@ -19,15 +21,7 @@ class LenteTermController extends Controller
         $marca = strtoupper(trim($request['marca_lente']));
         $diseno = strtoupper(trim($request['diseno_lente']));
 
-        $exists_lente = LenteTerm::where('nombre',$nombre_tabla)->where('marca',$marca)->where('diseno',$diseno)->exists();
-        if($exists_lente){
-            return response()->json([
-                'status' => 'warning',
-                'message' => 'EL lente terminado ya se encuentra registrado.'
-            ]);
-        }
-
-        $result = LenteTerm::create([
+        $datos_form = [
             'nombre' => $nombre_tabla,
             'marca' => $marca,
             'diseno' => $diseno,
@@ -35,12 +29,30 @@ class LenteTermController extends Controller
             'cil_desde' => $request['cil_desde'],
             'esf_hasta' => $request['esf_hasta'],
             'cil_hasta' => $request['cil_hasta'],
-            'usuario_id' => $usuario_id,
-        ]);
+        ];
+        //validar edicion de tabla_term
+        $tabla_id = !is_null(request()->get('tabla_id')) ? Crypt::decrypt(request()->get('tabla_id')) : false;
+        if($tabla_id){
+            $result = LenteTerm::where()->update($datos_form);
+            $message = 'La tabla de lentes terminados se ha actualizado exitosamente.';
+        }else{
+            $exists_lente = LenteTerm::where('nombre',$nombre_tabla)->where('marca',$marca)->where('diseno',$diseno)->exists();
+            if($exists_lente){
+                return response()->json([
+                    'status' => 'warning',
+                    'message' => 'EL lente terminado ya se encuentra registrado.'
+                ]);
+            }
+            $result = LenteTerm::create(array_merge($datos_form,[
+                'usuario_id' => $usuario_id
+            ]));
+            $message = 'La tabla de lentes terminados se ha registrado exitosamente.';
+        }
+
         if($result){
             return response()->json([
                 'status' => 'success',
-                'message' => 'El lente terminado se ha registro exitosamente.'
+                'message' => $message
             ]);
         }else{
             return response()->json([
@@ -56,7 +68,7 @@ class LenteTermController extends Controller
     
         foreach ($lentes_terminados as $item) {
             $array = [
-                'id' => $item['id'],
+                'id' => encrypt($item['id']),
                 'nombre' => $item['nombre'],
                 'marca' => $item['marca'],
                 'diseno' => $item['diseno'],
@@ -74,6 +86,24 @@ class LenteTermController extends Controller
         }
     
         return response()->json($stock_term);
+    }
+
+    public function getTableId(){
+        try{
+            $id = Crypt::decrypt(request()->get('id'));
+            $tabla_term = LenteTerm::where('id', $id)->first();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Datos obtenidos exitosamente.',
+                'result' => $tabla_term
+            ]);
+        }catch(Exception $e){
+            return response()->json([
+                'status' => 'error',
+                'message' => 'error: ' . $e->getMessage(),
+                'result' => null
+            ]);
+        }
     }
     
 }

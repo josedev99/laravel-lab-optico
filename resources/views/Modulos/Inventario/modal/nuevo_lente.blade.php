@@ -7,7 +7,7 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header bg-dark text-white px-2 py-1">
-          <h1 class="modal-title" style="font-size: 14px !important;">REGISTRAR TABLA DE TERMINADOS</h1>
+          <h1 class="modal-title" style="font-size: 14px !important;" id="title_modal_tabla">REGISTRAR TABLA DE TERMINADOS</h1>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body p-1">
