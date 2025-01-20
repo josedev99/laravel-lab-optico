@@ -31,9 +31,9 @@ class LenteTermController extends Controller
             'cil_hasta' => $request['cil_hasta'],
         ];
         //validar edicion de tabla_term
-        $tabla_id = !is_null(request()->get('tabla_id')) ? Crypt::decrypt(request()->get('tabla_id')) : false;
+        $tabla_id = !is_null(request()->get('tabla_id')) ? (int)request()->get('tabla_id') : false;
         if($tabla_id){
-            $result = LenteTerm::where()->update($datos_form);
+            $result = LenteTerm::where('id', $tabla_id)->update($datos_form);
             $message = 'La tabla de lentes terminados se ha actualizado exitosamente.';
         }else{
             $exists_lente = LenteTerm::where('nombre',$nombre_tabla)->where('marca',$marca)->where('diseno',$diseno)->exists();
@@ -68,7 +68,7 @@ class LenteTermController extends Controller
     
         foreach ($lentes_terminados as $item) {
             $array = [
-                'id' => encrypt($item['id']),
+                'id' => $item['id'],
                 'nombre' => $item['nombre'],
                 'marca' => $item['marca'],
                 'diseno' => $item['diseno'],
@@ -90,7 +90,7 @@ class LenteTermController extends Controller
 
     public function getTableId(){
         try{
-            $id = Crypt::decrypt(request()->get('id'));
+            $id = request()->get('id');
             $tabla_term = LenteTerm::where('id', $id)->first();
             return response()->json([
                 'status' => 'success',

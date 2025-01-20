@@ -19,12 +19,10 @@ document.addEventListener('DOMContentLoaded', async(e) => {
             FormLenteTerm.addEventListener('submit', async(e) => {
                 e.preventDefault();
                 let form_data = new FormData(FormLenteTerm);
-                (sessionStorage.getItem('tabla_id') !== null) ? form_data.append('tabla_id', sessionStorage.getItem('tabla_id')): false;
                 //validaciones
                 for ([key, value] of form_data.entries()) {
                     let input = document.querySelector(`input[name="${key}"]`);
-                    console.log(/^id$/.test(key));
-                    if (value.trim() === '' && !/^id$/.test(key)) {
+                    if (value.trim() === '') {
                         input.classList.add('input-error');
                         Swal.fire({
                             title: "Aviso",
@@ -36,8 +34,33 @@ document.addEventListener('DOMContentLoaded', async(e) => {
                         input.classList.remove('input-error');
                     }
                 }
+                //validaciones para rango de esferas y clindros
+                let esfera_desde = document.querySelector('input[name="esf_desde"]').value;
+                let esfera_hasta = document.querySelector('input[name="esf_hasta"]').value;
+                let cilindro_desde = document.querySelector('input[name="cil_desde"]').value;
+                let cilindro_hasta = document.querySelector('input[name="cil_hasta"]').value;
+
+                if (parseFloat(esfera_desde) > parseFloat(esfera_hasta)) {
+                    Swal.fire({
+                        title: "Error",
+                        text: `EL rango de la esfera es incorrecto.`,
+                        icon: "error"
+                    });
+                    return;
+                }
+                if (parseFloat(cilindro_desde) > parseFloat(cilindro_hasta)) {
+                    Swal.fire({
+                        title: "Error",
+                        text: `EL rango del cilindro es incorrecto.`,
+                        icon: "error"
+                    });
+                    return;
+                }
+
                 let btnSaveNewTabla = document.getElementById('btnSaveNewTabla');
                 btnSaveNewTabla.disabled = true;
+
+                (sessionStorage.getItem('tabla_id') !== null) ? form_data.append('tabla_id', sessionStorage.getItem('tabla_id')): false;
 
                 axios.post(route('lente.term.save'), form_data)
                     .then((response) => {
@@ -48,7 +71,7 @@ document.addEventListener('DOMContentLoaded', async(e) => {
                                 FormLenteTerm.reset();
                                 Swal.fire({
                                     title: "Éxito",
-                                    text: "Se ha registrado exitosamente el inventario.",
+                                    text: response.data.message,
                                     icon: "success"
                                 });
                             } else {
@@ -59,7 +82,6 @@ document.addEventListener('DOMContentLoaded', async(e) => {
                                 });
                             }
                         } else {
-                            console.log(response)
                             Swal.fire({
                                 title: "Error",
                                 text: "Ha ocurrido un error inesperado.",
@@ -208,7 +230,7 @@ function createTabLenteTerminados(data) {
                 for (let cil = cil_hasta; cil_desde <= cil; cil -= 0.25) {
                     let val_cil = (parseFloat(cil) > 0) ? '+' + cil.toFixed(2) : cil.toFixed(2);
 
-                    if (parseFloat(val_cil) === 0) {
+                    if (parseFloat(val_cil) === cil_hasta) {
                         tableHTML += `<tr><th style="border: 1px solid rgb(155, 148, 148);background:#4a494f;color: #ffffff">${val_esf}</th>`;
                     }
                     let stocks = element.stocks;
@@ -298,7 +320,6 @@ function editTableTerms(element) {
     axios.post(route('table.obtener'), { id })
         .then((response) => {
             let { result, status, message } = response.data;
-            console.log(result);
             if (status === 'success') {
                 setDataInputs(result);
                 //save tabla_id;
