@@ -5,6 +5,7 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ExistenciaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventarioController;
+use App\Http\Controllers\LenteRotoController;
 use App\Http\Controllers\LenteTermController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VentasController;
@@ -24,6 +25,10 @@ Route::prefix('/inventario')->middleware('auth')->group(function(){
     //Ingreso a inventario
     Route::post('ingreso-lentes-terminados',[ExistenciaController::class,'ingStockLenteTerm'])->name('lente.term.ingreso');
     Route::post('obtener-datos-tabla',[LenteTermController::class,'getTableId'])->name('table.obtener');
+    //Lentes rotos routas
+    Route::get('/lentes-rotos', [LenteRotoController::class, 'index'])->name('lente.roto.index');
+    Route::post('/obtener-lentes-term', [LenteRotoController::class, 'getLentesTerms'])->name('lente.roto.obtener');
+    Route::post('/guardar-lente-roto', [LenteRotoController::class, 'saveLenteRoto'])->name('lente.roto.save');
 });
 
 Route::prefix('/usuario')->middleware('auth')->group(function(){

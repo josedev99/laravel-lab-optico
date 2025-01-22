@@ -20,7 +20,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="components-accordion.html">
+                    <a href="{{route('lente.roto.index')}}">
                         <i class="bi bi-circle"></i><span>Lentes rotos</span>
                     </a>
                 </li>
