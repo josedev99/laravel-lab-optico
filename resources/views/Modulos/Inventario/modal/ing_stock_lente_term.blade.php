@@ -43,7 +43,7 @@
 
                             <div class="col-sm-12 col-md-4">
                                 <div class="content-input">
-                                    <input type="number" title="cantidad lente" name="cantidad_lente_term" placeholder=" " value="1" step="1" min="1" max="500" class="input">
+                                    <input type="number" title="cantidad lente" name="cantidad_lente_term" placeholder=" " value="1" step="1" max="500" class="input">
                                     <label class="input-label">Cantidad</label>
                                 </div>
                             </div>

@@ -31,10 +31,22 @@ class ExistenciaController extends Controller
             //validar stock
             $stock_actual = Existencia::where('codigo',$codigo)->where('esfera',$esfera_lente)->where('cilindro',$cilindro_lente)->where('lente_term_id',$lente_term_id)->first();
             if($stock_actual){
-                $stock_actual->increment('stock',$cantidad,[
-                    'precio_costo' => $precio_costo,
-                    'precio_venta' => $precio_venta
-                ]);
+                //Validar el signo del valor recibido
+                if($cantidad > 0){
+                    $stock_actual->increment('stock',$cantidad,[
+                        'precio_costo' => $precio_costo,
+                        'precio_venta' => $precio_venta
+                    ]);
+                }else{
+                    if((int)$stock_actual['stock'] >= abs($cantidad)){
+                        $stock_actual->decrement('stock',abs($cantidad));
+                    }else{
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => 'La cantidad a retirar es mayor al stock actual.'
+                        ]);
+                    }
+                }
                 $stock_actual->save();
                 DB::commit();
                 $result = true;
