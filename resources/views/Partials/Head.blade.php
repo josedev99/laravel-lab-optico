@@ -23,7 +23,11 @@
     <link href="{{ asset('assets/vendor/quill/quill.snow.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/quill/quill.bubble.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{{ asset('assets/vendor/datatables-bs5/css/dataTables.bootstrap5.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/datatables-responsive/css/responsive.bootstrap5.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/datatables-buttons/css/buttons.bootstrap5.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/daterangepicker/daterangepicker.css') }}">
 
     <link rel="stylesheet" href="{{ asset('assets/vendor/selectize/selectize.bootstrap5.css') }}">
     <!-- Template Main CSS File -->

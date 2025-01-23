@@ -18,13 +18,22 @@
 <script src="{{ asset('assets/vendor/chart.js/chart.umd.js') }}"></script>
 <script src="{{ asset('assets/vendor/echarts/echarts.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/quill/quill.js') }}"></script>
-<script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
+
+<script src="{{ asset('assets/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/datatables-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/datatables-buttons/js/buttons.bootstrap5.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/jszip/jszip.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+
 <script src="{{ asset('assets/vendor/tinymce/tinymce.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
 
 <script src="{{ asset('assets/vendor/selectize/selectize.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/axios/axios.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/sweetalert2/sweetalert2.all.min.js') }}"></script>
+<script src="{{ asset('app/dataTable.js') }}"></script>
 <script>
     window.axios = axios;
 </script>
