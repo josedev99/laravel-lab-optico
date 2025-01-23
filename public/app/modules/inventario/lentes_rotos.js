@@ -3,6 +3,8 @@ console.log('init..')
 
 document.addEventListener('DOMContentLoaded', () => {
     $("#justif").selectize();
+    //Call datatable lentes rotos
+    dataTable('dt-lentes-rotos', route('lente.roto.listar'));
 
     //Button open modal
     let btnLenteRoto = document.getElementById('btn_lente_roto');
@@ -32,6 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             text: message,
                             icon: "success"
                         });
+                        //refresh datatable
+                        $("#dt-lentes-rotos").DataTable().ajax.reload();
                     } else {
                         Swal.fire({
                             title: "Error",
@@ -77,4 +81,45 @@ function getLentesRotos() {
         .finally(() => {
 
         })
+}
+
+function removeLenteRoto(element) {
+    let key_item = element.dataset.key;
+
+    Swal.fire({
+        title: "Eliminar reporte lente roto?",
+        text: "Esta acción removera el lente roto de forma permanente.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, continuar",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            axios.post(route('lente.roto.remove'), { key: key_item })
+                .then((response) => {
+                    let { status, message } = response.data;
+                    if (status === "success") {
+                        Swal.fire({
+                            title: "Éxito",
+                            text: message,
+                            icon: "success"
+                        });
+                        //refresh datatable
+                        $("#dt-lentes-rotos").DataTable().ajax.reload();
+                    } else {
+                        Swal.fire({
+                            title: "Error",
+                            text: message,
+                            icon: "error"
+                        });
+                    }
+                    console.log(response);
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+        }
+    });
 }

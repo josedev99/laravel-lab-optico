@@ -9,6 +9,8 @@ class LenteRoto extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'fecha',
+        'hora',
         'codigo',
         'tipo',
         'cantidad',

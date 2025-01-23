@@ -29,6 +29,9 @@ Route::prefix('/inventario')->middleware('auth')->group(function(){
     Route::get('/lentes-rotos', [LenteRotoController::class, 'index'])->name('lente.roto.index');
     Route::post('/obtener-lentes-term', [LenteRotoController::class, 'getLentesTerms'])->name('lente.roto.obtener');
     Route::post('/guardar-lente-roto', [LenteRotoController::class, 'saveLenteRoto'])->name('lente.roto.save');
+    //Listar lente rotos (Inventario)
+    Route::post('/listar-lentes-roto', [LenteRotoController::class, 'listar_lentes_rotos'])->name('lente.roto.listar');
+    Route::post('/eliminar-lente-roto', [LenteRotoController::class, 'removeLenteRoto'])->name('lente.roto.remove');
 });
 
 Route::prefix('/usuario')->middleware('auth')->group(function(){

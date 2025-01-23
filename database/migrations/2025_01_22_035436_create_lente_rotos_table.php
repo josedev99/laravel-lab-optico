@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('lente_rotos', function (Blueprint $table) {
             $table->id();
+            $table->string('fecha',15);
+            $table->string('hora',15);
             $table->string('codigo',50);
             $table->string('tipo',50);
             $table->unsignedBigInteger('cantidad');
