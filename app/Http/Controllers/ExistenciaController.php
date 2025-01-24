@@ -21,7 +21,7 @@ class ExistenciaController extends Controller
             $precio_costo = (float)request()->get('precio_costo_term');
             DB::beginTransaction();
             //validar datos repetidos
-            $stock_lente_term = Existencia::where('codigo',$codigo)->where('lente_term_id',$lente_term_id)->first('stock');
+            $stock_lente_term = Existencia::where('codigo',$codigo)->where('lente_term_id',$lente_term_id)->first();
             if($stock_lente_term){
                 if((int)$stock_lente_term['stock'] != 0){
                     return response()->json([

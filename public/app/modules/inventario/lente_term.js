@@ -38,12 +38,17 @@ document.addEventListener('DOMContentLoaded', async(e) => {
                 let formData = new FormData(formGenCodeLente);
                 let new_code_lente = formData.get('new_code_lente');
                 if (new_code_lente.trim() === "") {
-                    document.getElementById('codigo_lente_term').value = generarCodigo();
+                    Swal.fire({
+                        title: "Aviso",
+                        text: `El código del lente es obligatorio.`,
+                        icon: "warning"
+                    });
+                    return;
                 } else {
                     document.getElementById('codigo_lente_term').value = new_code_lente;
+                    formGenCodeLente.reset();
+                    $("#modal-gen-codigo-lente").modal('hide');
                 }
-                formGenCodeLente.reset();
-                $("#modal-gen-codigo-lente").modal('hide');
             })
         }
         //processing form

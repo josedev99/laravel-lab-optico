@@ -14,7 +14,7 @@
                                 <div class="content-input">
                                     <input type="text" title="código lente" name="new_code_lente" id="new_code_lente" placeholder=" " class="input p-icon">
                                     <label class="input-label">Código lente</label>
-                                    <span class="input-icon" id="btnGenCodeAleatorio"><i class="bi bi-sort-numeric-up-alt"></i></span>
+                                    <span title="Generar código aleatorio" class="input-icon" id="btnGenCodeAleatorio"><i class="bi bi-sort-numeric-up-alt"></i></span>
                                 </div>
                             </div>
                         </div>
