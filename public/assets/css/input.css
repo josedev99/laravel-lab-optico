@@ -1,4 +1,5 @@
 .content-input {
+    position: relative;
     width: auto;
     margin: 8px 0px;
     display: grid;
@@ -10,7 +11,7 @@
     width: 100%;
     border-radius: 6px;
     border: 1px solid #dadce0;
-    padding: .4rem 1.2rem;
+    padding: .4rem .7rem;
     outline: none;
 }
 
@@ -45,4 +46,32 @@
 
 .input-error {
     border: 2px solid #d76a6a !important;
+}
+
+
+/**Input icon**/
+
+.input-icon {
+    position: absolute;
+    top: 50%;
+    left: 75%;
+    transform: translate(50%, -50%);
+    height: 36px;
+    border-left: 1px solid #dadce0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 36px;
+    /* background: #000; */
+    border-radius: 6px;
+    color: #000;
+    cursor: pointer;
+}
+
+.input-icon i {
+    font-size: 18px;
+}
+
+.p-icon {
+    padding: .4rem 3.1rem .4rem .5rem;
 }

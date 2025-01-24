@@ -21,13 +21,15 @@ class ExistenciaController extends Controller
             $precio_costo = (float)request()->get('precio_costo_term');
             DB::beginTransaction();
             //validar datos repetidos
-            /**$exists = Existencia::where('codigo',$codigo)->where('lente_term_id',$lente_term_id)->exists();
-            if($exists){
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'El código ingresado para el lente ya se encuentra registrado.'
-                ]);
-            }**/
+            $stock_lente_term = Existencia::where('codigo',$codigo)->where('lente_term_id',$lente_term_id)->first('stock');
+            if($stock_lente_term){
+                if((int)$stock_lente_term['stock'] != 0){
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'El código ingresado para el lente ya se encuentra registrado.'
+                    ]);
+                }
+            }
             //validar stock
             $stock_actual = Existencia::where('codigo',$codigo)->where('esfera',$esfera_lente)->where('cilindro',$cilindro_lente)->where('lente_term_id',$lente_term_id)->first();
             if($stock_actual){

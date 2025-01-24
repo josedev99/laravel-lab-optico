@@ -13,6 +13,39 @@ document.addEventListener('DOMContentLoaded', async(e) => {
                 sessionStorage.removeItem('tabla_id');
             })
         }
+        //Gernerar codigo aleatorio
+        let btnGenCodeAleatorio = document.getElementById('btnGenCodeAleatorio');
+        if (btnGenCodeAleatorio) {
+            btnGenCodeAleatorio.addEventListener('click', (e) => {
+                document.getElementById('new_code_lente').value = generarCodigo();
+                e.stopPropagation();
+            })
+        }
+        //Nuevo codigo lente
+        let btnGenNewCode = document.getElementById('btnGenNewCode');
+        if (btnGenNewCode) {
+            btnGenNewCode.addEventListener('click', (e) => {
+                document.getElementById('new_code_lente').value = '';
+                $("#modal-gen-codigo-lente").modal('show');
+                e.stopPropagation();
+            })
+        }
+
+        const formGenCodeLente = document.getElementById('form-gen-code-lente');
+        if (formGenCodeLente) {
+            formGenCodeLente.addEventListener('submit', (e) => {
+                e.preventDefault();
+                let formData = new FormData(formGenCodeLente);
+                let new_code_lente = formData.get('new_code_lente');
+                if (new_code_lente.trim() === "") {
+                    document.getElementById('codigo_lente_term').value = generarCodigo();
+                } else {
+                    document.getElementById('codigo_lente_term').value = new_code_lente;
+                }
+                formGenCodeLente.reset();
+                $("#modal-gen-codigo-lente").modal('hide');
+            })
+        }
         //processing form
         const FormLenteTerm = document.getElementById('form-lente-term');
         if (FormLenteTerm) {
@@ -208,7 +241,7 @@ function createTabLenteTerminados(data) {
 
             let tableHTML = `
                     <table style="width:100%;border-collapse: collapse;text-align:center;font-size: 13px">
-                        <thead style="background:#4a494f;color: #ffffff">
+                        <thead style="background:#011;color: #ffffff">
                             <tr>
                                 <th style="border: 1px solid rgb(155, 148, 148);width:5%">Esf/Cil</th>
             `;
@@ -231,7 +264,7 @@ function createTabLenteTerminados(data) {
                     let val_cil = (parseFloat(cil) > 0) ? '+' + cil.toFixed(2) : cil.toFixed(2);
 
                     if (parseFloat(val_cil) === cil_hasta) {
-                        tableHTML += `<tr><th style="border: 1px solid rgb(155, 148, 148);background:#4a494f;color: #ffffff">${val_esf}</th>`;
+                        tableHTML += `<tr><th style="border: 1px solid rgb(155, 148, 148);background:#012970;color: #ffffff">${val_esf}</th>`;
                     }
                     let stocks = element.stocks;
                     let searchLenteTerm = stocks.find((stock) => parseFloat(stock.esfera) === parseFloat(val_esf) && parseFloat(stock.cilindro) === parseFloat(val_cil));
@@ -245,7 +278,7 @@ function createTabLenteTerminados(data) {
                         precio_venta = parseFloat(searchLenteTerm.precio_venta).toFixed(2);
                         stock_actual = parseInt(searchLenteTerm.stock);
                     }
-                    tableHTML += `<td onclick="addLenteTerm(this)" data-id="${element.id}" data-codigo="${codigo}" data-precio_costo="${precio_costo}" data-precio_venta="${precio_venta}" data-marca="${element.marca}" data-diseno="${element.diseno}" data-nombre="${element.nombre}" data-esfera="${val_esf}" data-cilindro="${val_cil}" style="border: 1px solid rgb(155, 148, 148)">${stock_actual}</td>`;
+                    tableHTML += `<td onclick="addLenteTerm(this)" data-id="${element.id}" data-stock_actual="${stock_actual}" data-codigo="${codigo}" data-precio_costo="${precio_costo}" data-precio_venta="${precio_venta}" data-marca="${element.marca}" data-diseno="${element.diseno}" data-nombre="${element.nombre}" data-esfera="${val_esf}" data-cilindro="${val_cil}" style="border: 1px solid rgb(155, 148, 148);color: #000;">${stock_actual}</td>`;
 
                     if (parseFloat(val_cil) === parseFloat(cil_desde)) {
                         tableHTML += `</tr>`;
@@ -269,7 +302,7 @@ function createTabLenteTerminados(data) {
 }
 
 function addLenteTerm(cell) {
-    let { id, marca, diseno, nombre, esfera, cilindro, codigo, precio_costo, precio_venta } = cell.dataset;
+    let { id, stock_actual, marca, diseno, nombre, esfera, cilindro, codigo, precio_costo, precio_venta } = cell.dataset;
     document.getElementById('codigo_lente_term').value = codigo;
     document.getElementById('marca_lente_term').value = marca;
     document.getElementById('diseno_lente_term').value = diseno;
@@ -282,6 +315,9 @@ function addLenteTerm(cell) {
     //reset form
     resetValidError();
     $("#modal-stock-lente-term").modal('show');
+    if (parseInt(stock_actual) === 0) {
+        $("#modal-gen-codigo-lente").modal('show');
+    }
 }
 
 function resetValidError() {
@@ -359,4 +395,19 @@ function setDataInputs(data) {
     //button form
     document.getElementById('btnSaveNewTabla').innerHTML = `<i class="bi bi-floppy2"></i> Actualizar`;
     document.getElementById('title_modal_tabla').textContent = 'ACTUALIZAR TABLA DE TERMINADOS';
+}
+
+function generarCodigo() {
+    const fecha = new Date();
+    const anioMes = fecha.getFullYear().toString().slice(-2) + String(fecha.getMonth() + 1).padStart(2, '0');
+
+    let codigoAleatorio = '';
+    const numerosDisponibles = Array.from({ length: 10 }, (_, i) => i); // [0, 1, 2, ..., 9]
+
+    while (codigoAleatorio.length < 6) {
+        const indice = Math.floor(Math.random() * numerosDisponibles.length);
+        codigoAleatorio += numerosDisponibles[indice];
+        numerosDisponibles.splice(indice, 1); // Remover el número usado
+    }
+    return anioMes + codigoAleatorio;
 }

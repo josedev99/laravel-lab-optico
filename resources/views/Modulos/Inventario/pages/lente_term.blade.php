@@ -15,6 +15,7 @@
 @section('content')
 @include('Modulos.Inventario.modal.nuevo_lente')
 @include('Modulos.Inventario.modal.ing_stock_lente_term')
+@include('Modulos.Inventario.modal.generar_codigo')
     <div class="card p-1 m-0">
         <div class="card-header p-1">
             <button id="btn_nuevo_lente" class="btn btn-outline-success btn-sm">Crear tabla <i class="bi bi-plus-circle"></i></button>
