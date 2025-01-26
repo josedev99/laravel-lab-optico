@@ -12,6 +12,7 @@ class ExistenciaController extends Controller
     public function ingStockLenteTerm(){
         //return request()->all();
         try{
+            $codigo_exists = request()->get('codigo_exists');
             $codigo = trim(request()->get('codigo_lente_term'));
             $cantidad = (int)request()->get('cantidad_lente_term');
             $esfera_lente = trim(request()->get('esfera_lente'));
@@ -20,38 +21,38 @@ class ExistenciaController extends Controller
             $precio_venta = (float)request()->get('precio_venta_term');
             $precio_costo = (float)request()->get('precio_costo_term');
             DB::beginTransaction();
-            //validar datos repetidos
-            $stock_lente_term = Existencia::where('codigo',$codigo)->where('lente_term_id',$lente_term_id)->first();
-            if($stock_lente_term){
-                if((int)$stock_lente_term['stock'] != 0){
+            //validar si codigo exists es igual a codigo form input
+            $valid_codigo = ($codigo_exists != "") ? $codigo_exists : $codigo;
+            $stock_actual = Existencia::where('codigo',$valid_codigo)->where('lente_term_id',$lente_term_id)->first();
+
+            if($stock_actual){
+                if($stock_actual['codigo'] == $codigo_exists){
+                    //Validar el signo del valor recibido
+                    if($cantidad > 0){
+                        $stock_actual->increment('stock',$cantidad,[
+                            'codigo' => $codigo,
+                            'precio_costo' => $precio_costo,
+                            'precio_venta' => $precio_venta
+                        ]);
+                    }else{
+                        if((int)$stock_actual['stock'] >= abs($cantidad)){
+                            $stock_actual->decrement('stock',abs($cantidad));
+                        }else{
+                            return response()->json([
+                                'status' => 'error',
+                                'message' => 'La cantidad a retirar es mayor al stock actual.'
+                            ]);
+                        }
+                    }
+                    $stock_actual->save();
+                    DB::commit();
+                    $result = true;
+                }else{
                     return response()->json([
                         'status' => 'error',
                         'message' => 'El código ingresado para el lente ya se encuentra registrado.'
                     ]);
                 }
-            }
-            //validar stock
-            $stock_actual = Existencia::where('codigo',$codigo)->where('esfera',$esfera_lente)->where('cilindro',$cilindro_lente)->where('lente_term_id',$lente_term_id)->first();
-            if($stock_actual){
-                //Validar el signo del valor recibido
-                if($cantidad > 0){
-                    $stock_actual->increment('stock',$cantidad,[
-                        'precio_costo' => $precio_costo,
-                        'precio_venta' => $precio_venta
-                    ]);
-                }else{
-                    if((int)$stock_actual['stock'] >= abs($cantidad)){
-                        $stock_actual->decrement('stock',abs($cantidad));
-                    }else{
-                        return response()->json([
-                            'status' => 'error',
-                            'message' => 'La cantidad a retirar es mayor al stock actual.'
-                        ]);
-                    }
-                }
-                $stock_actual->save();
-                DB::commit();
-                $result = true;
             }else{
                 $result = Existencia::create([
                     'codigo' => $codigo,

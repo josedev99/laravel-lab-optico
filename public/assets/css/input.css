@@ -54,8 +54,8 @@
 .input-icon {
     position: absolute;
     top: 50%;
-    left: 75%;
-    transform: translate(50%, -50%);
+    right: 4px;
+    transform: translateY(-50%);
     height: 36px;
     border-left: 1px solid #dadce0;
     display: flex;

@@ -1,4 +1,4 @@
-<div class="modal fade" id="modal-gen-codigo-lente" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal-gen-codigo-lente" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background: rgb(68 68 68 / 60%);">
     <div class="modal-dialog modal-md modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header bg-dark text-white px-2 py-1">
@@ -10,7 +10,7 @@
             <div class="card p-1 m-0">
                 <div class="card-body p-1">
                         <div class="row d-flex justify-content-center">
-                            <div class="col-sm-12 col-md-6">
+                            <div class="col-sm-12 col-md-8">
                                 <div class="content-input">
                                     <input type="text" title="código lente" name="new_code_lente" id="new_code_lente" placeholder=" " class="input p-icon">
                                     <label class="input-label">Código lente</label>

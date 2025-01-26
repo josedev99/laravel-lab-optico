@@ -25,7 +25,8 @@ document.addEventListener('DOMContentLoaded', async(e) => {
         let btnGenNewCode = document.getElementById('btnGenNewCode');
         if (btnGenNewCode) {
             btnGenNewCode.addEventListener('click', (e) => {
-                document.getElementById('new_code_lente').value = '';
+                let codigo_old = document.getElementById('codigo_lente_term');
+                document.getElementById('new_code_lente').value = codigo_old.value.trim();
                 $("#modal-gen-codigo-lente").modal('show');
                 e.stopPropagation();
             })
@@ -104,6 +105,8 @@ document.addEventListener('DOMContentLoaded', async(e) => {
                     .then((response) => {
                         if (response.status === 200) {
                             if (response.data.status === 'success') {
+                                sessionStorage.removeItem('tabla_id');
+                                sessionStorage.removeItem('codigo_lente');
                                 getLentesTerminados();
                                 $("#modal-nuevo-lente").modal('hide')
                                 FormLenteTerm.reset();
@@ -163,6 +166,8 @@ document.addEventListener('DOMContentLoaded', async(e) => {
                     }
                 }
                 formData.append('lente_term_id', sessionStorage.getItem('lente_term_id'));
+                (sessionStorage.getItem('codigo_lente') !== null) ? formData.append('codigo_exists', sessionStorage.getItem('codigo_lente')): '';
+
                 let btnSaveStockLenteTerms = document.getElementById('btnSaveStockLenteTerms');
                 btnSaveStockLenteTerms.disabled = true;
                 axios.post(route('lente.term.ingreso'), formData)
@@ -308,10 +313,12 @@ function createTabLenteTerminados(data) {
 
 function addLenteTerm(cell) {
     let { id, stock_actual, marca, diseno, nombre, esfera, cilindro, codigo, precio_costo, precio_venta } = cell.dataset;
+
     document.getElementById('codigo_lente_term').value = codigo;
     document.getElementById('marca_lente_term').value = marca;
     document.getElementById('diseno_lente_term').value = diseno;
     sessionStorage.setItem('lente_term_id', id);
+    sessionStorage.setItem('codigo_lente', codigo.trim());
     document.getElementById('esfera_lente').value = esfera;
     document.getElementById('cilindro_lente').value = cilindro;
     document.getElementById('precio_costo_term').value = precio_costo;
