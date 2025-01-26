@@ -27,14 +27,21 @@
                     <div class="card p-1 m-0">
                         <div class="card-body p-1">
                             <div class="row">
-                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="input-group mb-2">
-                                        <select class="form-select" name="buscar_lente" id="buscar_lente">
-                                            <option value="">Buscar lente</option>
+                                        <select class="form-select" name="tipo_lente" id="tipo_lente">
+                                            <option value="">Selecc. Tipo lente</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-4 col-lg-2">
+                                <div class="col-sm-12 col-md-6 col-lg-4">
+                                    <div class="input-group mb-2">
+                                        <select class="form-select" name="lente_esf_cil" id="lente_esf_cil">
+                                            <option value="">Selecc. Esfera/Cilindro</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-lg-2">
                                     <div class="content-input mb-2">
                                         <input type="number" title="cantidad lente" name="cantidad_lente"
                                             placeholder=" " value="1" step="1" min="1" max="500"
@@ -42,32 +49,48 @@
                                         <label class="input-label">Cantidad</label>
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-8 col-lg-10 d-flex align-items-center">
-                                    <div class="input-group">
-                                        <select class="form-select" name="justif" id="justif">
-                                            <option value="">Selecc. Justificación</option>
-                                            <option value="Defecto de Fabrica del AR">Defecto de Fabrica del AR</option>
-                                            <option value="Defecto de Fabrica de Tratamiento Fotosensible">Defecto de
-                                                Fabrica de Tratamiento Fotosensible</option>
-                                            <option value="Daño al Ranurar">Daño al Ranurar</option>
-                                            <option value="Astilladura en el ranurado al montar">Astilladura en el
-                                                ranurado al montar</option>
-                                            <option value="Daño al Biselar">Daño al Biselar</option>
-                                            <option value="Rayas de Fabrica">Rayas de Fabrica</option>
-                                            <option value="Rayas al procesar">Rayas al procesar</option>
-                                            <option value="Corte muy pequeño">Corte muy pequeño</option>
-                                            <option
-                                                value="Astilladura por colocación a presión en metal que no trae tornillos">
-                                                Astilladura por colocación a presión en metal que no trae tornillos
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-12">
-                                    <div class="content-input">
-                                        <input type="text" name="observaciones" title="observaciones" placeholder=" "
-                                            class="input mayus">
-                                        <label class="input-label">Observaciones</label>
+                                <div class="col-sm-12">
+                                    <div class="card m-0 p-1">
+                                        <div class="card-header p-1">
+                                            <div class="checkbox icheck-primary d-inline">
+                                                <input type="radio" name="checkOptions" id="checkBodega" />
+                                                <label for="checkBodega">Daño en bodega</label>
+                                            </div>
+                                            <div class="checkbox icheck-info d-inline">
+                                                <input type="radio" name="checkOptions" id="checkMontaje" />
+                                                <label for="checkMontaje">Daño en montaje</label>
+                                            </div>
+                                        </div>
+                                        <div class="card-body p-1">
+                                            <div class="col-sm-12">
+                                                <div class="input-group">
+                                                    <select class="form-select" name="justif" id="justif">
+                                                        <option value="">Selecc. Justificación</option>
+                                                        <option value="Defecto de Fabrica del AR">Defecto de Fabrica del AR</option>
+                                                        <option value="Defecto de Fabrica de Tratamiento Fotosensible">Defecto de
+                                                            Fabrica de Tratamiento Fotosensible</option>
+                                                        <option value="Daño al Ranurar">Daño al Ranurar</option>
+                                                        <option value="Astilladura en el ranurado al montar">Astilladura en el
+                                                            ranurado al montar</option>
+                                                        <option value="Daño al Biselar">Daño al Biselar</option>
+                                                        <option value="Rayas de Fabrica">Rayas de Fabrica</option>
+                                                        <option value="Rayas al procesar">Rayas al procesar</option>
+                                                        <option value="Corte muy pequeño">Corte muy pequeño</option>
+                                                        <option
+                                                            value="Astilladura por colocación a presión en metal que no trae tornillos">
+                                                            Astilladura por colocación a presión en metal que no trae tornillos
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-12">
+                                                <div class="content-input">
+                                                    <input type="text" name="observaciones" title="observaciones" placeholder=" "
+                                                        class="input mayus">
+                                                    <label class="input-label">Observaciones</label>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
