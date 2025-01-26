@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Existencia;
 use App\Models\LenteRoto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,16 +16,28 @@ class LenteRotoController extends Controller
     }
 
     public function getLentesTerms(){
-        $lentes_terms = DB::select("select e.codigo,CONCAT(e.codigo,' | ',' Esfera: ', e.esfera, ' Cilindro: ',e.cilindro) as especif from existencias as e inner join lente_terms as l on e.lente_term_id=l.id");
+        $lente_temns_all = DB::select("select l.id,l.nombre, l.marca,l.diseno from lente_terms as l order by l.id desc");
+        $lentes_all = [];
+        foreach($lente_temns_all as $term){
+            $array = [
+                'id' => $term->id,
+                'nombre' => $term->nombre,
+                'marca' => $term->marca,
+                'diseno' => $term->diseno,
+            ];
+            $stocks = DB::select("select e.id,e.lente_term_id,e.codigo,CONCAT(e.codigo,' | ',' Esfera: ', e.esfera, ' Cilindro: ',e.cilindro) as especif from existencias as e where e.lente_term_id = ?",[$term->id]);
+            $array['stocks'] = $stocks;  
+            $lentes_all[] = $array;
+        }
         return response()->json([
             'status' => 'success',
-            'data' => $lentes_terms
+            'data' => $lentes_all
         ]);
     }
 
     public function saveLenteRoto(){
         date_default_timezone_set('America/El_Salvador');
-        $buscar_lente = request()->get('buscar_lente');
+        $buscar_lente = request()->get('lente_especif');
         $array_lente = explode('|',$buscar_lente);
         $codigo = $array_lente[0];
         $especificaciones = $array_lente[1];
@@ -32,18 +45,22 @@ class LenteRotoController extends Controller
         $cantidad_lente = request()->get('cantidad_lente');
         $justif = request()->get('justif');
         $observaciones = request()->get('observaciones');
+        $lente_id = request()->get('tipo_lente');
+        $tipo = request()->get('checkOptions');
 
         $result = LenteRoto::create([
             'fecha' => date('Y-m-d'),
             'hora' => date('H:i:s'),
             'codigo' => $codigo,
-            'tipo' => 'lente terminado',
+            'tipo' => $tipo,
             'cantidad' => $cantidad_lente,
             'especificaciones' => $especificaciones,
             'justificacion' => $justif,
+            'lente_id' => $lente_id,
             'observaciones' => $observaciones,
             'usuario_id' => Auth::user()->id, 
         ]);
+        $this->validDecrementStock($tipo,$codigo,$lente_id,$cantidad_lente);
         if($result){
             return response()->json([
                 'status' => 'success',
@@ -57,8 +74,16 @@ class LenteRotoController extends Controller
         }
     }
 
+    public function validDecrementStock($tipo, $codigo,$lente_id, $cantidad){
+        if($tipo == "Bodega"){
+            $result = Existencia::where('codigo', $codigo)->where('lente_term_id',$lente_id)->where('stock','>',0)->decrement('stock',$cantidad);
+            return $result;
+        }
+        return false;
+    }
+
     public function listar_lentes_rotos(){
-        $datos = DB::select("select lr.id,lr.codigo,lr.fecha,lr.hora,lr.cantidad,lr.especificaciones,lr.justificacion,u.nombre from lente_rotos as lr inner join users as u on lr.usuario_id=u.id order by lr.id desc;");
+        $datos = DB::select("select lr.id,lr.codigo,lr.fecha,lr.hora,lr.tipo,lr.cantidad,concat(l.nombre,' ',l.marca,' ',l.diseno,' - ',trim(lr.especificaciones)) as especificaciones,lr.justificacion,u.nombre from lente_rotos as lr inner join lente_terms as l on lr.lente_id=l.id inner join users as u on lr.usuario_id=u.id order by lr.id desc;");
 
         $contador = 1;
         $data = [];
@@ -67,6 +92,7 @@ class LenteRotoController extends Controller
             $sub_array[] = $contador;
             $sub_array[] = $row->codigo;
             $sub_array[] = date('d/m/Y H:i:s A',strtotime($row->fecha . '' . $row->hora));
+            $sub_array[] = $row->tipo;
             $sub_array[] = $row->cantidad;
             $sub_array[] = $row->especificaciones;
             $sub_array[] = $row->justificacion;

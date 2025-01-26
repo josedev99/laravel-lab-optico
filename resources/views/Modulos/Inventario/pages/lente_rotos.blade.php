@@ -27,6 +27,7 @@
                         <th style="text-align:center">#</th>
                         <th style="text-align:center">Código</th>
                         <th style="text-align:center">Fecha</th>
+                        <th style="text-align:center">Daño por</th>
                         <th style="text-align:center">Cantidad</th>
                         <th style="text-align:center">Especificaciones</th>
                         <th style="text-align:center">Justificación</th>

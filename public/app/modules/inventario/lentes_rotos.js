@@ -1,8 +1,10 @@
 console.log('init..')
     //btn_lente_roto
+var items_lentes = [];
 
 document.addEventListener('DOMContentLoaded', () => {
     $("#justif").selectize();
+    $("#lente_especif").selectize();
     //Call datatable lentes rotos
     dataTable('dt-lentes-rotos', route('lente.roto.listar'));
 
@@ -20,13 +22,50 @@ document.addEventListener('DOMContentLoaded', () => {
         formLenteRoto.addEventListener('submit', (e) => {
             e.preventDefault();
             let formData = new FormData(formLenteRoto);
+            //Validaciones
+            let optionReporte = document.querySelector('input[name="checkOptions"]:checked');
+            if (optionReporte === null) {
+                Swal.fire({
+                    title: "Aviso",
+                    text: 'Por favor, elige el tipo de daño para el lente roto.',
+                    icon: "warning"
+                });
+                return;
+            }
+            let tipo_lente = $("#tipo_lente")[0].selectize.getValue();
+            if (tipo_lente === "") {
+                Swal.fire({
+                    title: "Aviso",
+                    text: 'Selecciona el tipo de lente',
+                    icon: "warning"
+                });
+                return;
+            }
+            let espeficacion_lente = $("#lente_especif")[0].selectize.getValue();
+            if (espeficacion_lente === "") {
+                Swal.fire({
+                    title: "Aviso",
+                    text: 'Selecciona la esfera y el cilindro del lente roto.',
+                    icon: "warning"
+                });
+                return;
+            }
+            let justif = $("#justif")[0].selectize.getValue();
+            if (justif === "") {
+                Swal.fire({
+                    title: "Aviso",
+                    text: 'Selecciona la justificación para el lente roto.',
+                    icon: "warning"
+                });
+                return;
+            }
             axios.post(route('lente.roto.save'), formData)
                 .then((response) => {
-                    console.log(response);
+                    console.log(response.data);
                     let { status, message } = response.data;
                     if (status === 'success') {
                         formLenteRoto.reset();
-                        $("#buscar_lente").selectize()[0].selectize.clear();
+                        $("#tipo_lente").selectize()[0].selectize.clear();
                         $("#justif").selectize()[0].selectize.clear();
                         $("#modal-lente-roto").modal('hide');
                         Swal.fire({
@@ -50,30 +89,72 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 })
 
+function addOptionsSelectTipo() {
+    if (items_lentes.length > 0) {
+        let selectize_lente = $("#tipo_lente").selectize({
+            sortField: 'text',
+            searchField: 'text',
+            score: function(search) {
+                return function(item) {
+                    const text = item.text.toLowerCase();
+                    const keyword = search.toLowerCase();
+                    return text.includes(keyword) ? 1 : 0;
+                };
+            }
+        })[0].selectize;
+        selectize_lente.clear();
+        selectize_lente.clearOptions();
+        console.log(items_lentes);
+        items_lentes.forEach(lente => {
+            selectize_lente.addOption({
+                value: lente.id,
+                text: `${lente.nombre} ${lente.marca} ${lente.diseno}`
+            })
+        });
+        //evento change
+        selectize_lente.on('change', (value) => {
+            let index = items_lentes.findIndex((lente) => parseInt(lente.id) === parseInt(value));
+            if (index !== -1) {
+                let stocks = items_lentes[index].stocks.filter((lente) => parseInt(lente.lente_term_id) === parseInt(value));
+                addOptionsEsfCilLente(stocks);
+            }
+        })
+    }
+}
+
+function addOptionsEsfCilLente(data) {
+    let select_esf_cil = $("#lente_especif").selectize({
+        sortField: 'text',
+        searchField: 'text',
+        score: function(search) {
+            return function(item) {
+                const text = item.text.toLowerCase();
+                const keyword = search.toLowerCase();
+                return text.includes(keyword) ? 1 : 0;
+            };
+        }
+    })[0].selectize;
+    select_esf_cil.clear();
+    select_esf_cil.clearOptions();
+
+    if (data.length > 0) {
+        data.forEach(rx => {
+            console.log(rx);
+            select_esf_cil.addOption({
+                value: `${rx.especif}`,
+                text: `${rx.especif}`
+            })
+        });
+    }
+}
+
 
 function getLentesRotos() {
     axios.post(route('lente.roto.obtener'))
         .then((response) => {
             let { status, data } = response.data;
-            let selectize_lente = $("#buscar_lente").selectize({
-                sortField: 'text',
-                searchField: 'text',
-                score: function(search) {
-                    return function(item) {
-                        const text = item.text.toLowerCase();
-                        const keyword = search.toLowerCase();
-                        return text.includes(keyword) ? 1 : 0;
-                    };
-                }
-            })[0].selectize;
-            selectize_lente.clear();
-            selectize_lente.clearOptions();
-            data.forEach(lente => {
-                selectize_lente.addOption({
-                    value: lente.especif,
-                    text: lente.especif
-                })
-            });
+            items_lentes = data;
+            addOptionsSelectTipo();
         })
         .catch((err) => {
             console.log(err);

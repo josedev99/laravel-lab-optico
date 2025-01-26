@@ -15,6 +15,7 @@ class LenteRoto extends Model
         'tipo',
         'cantidad',
         'especificaciones',
+        'lente_id',
         'justificacion',
         'observaciones',
         'usuario_id',
