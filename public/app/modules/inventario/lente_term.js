@@ -1,3 +1,4 @@
+var stock_codigos_update = [];
 document.addEventListener('DOMContentLoaded', async(e) => {
     try {
         getLentesTerminados();
@@ -168,11 +169,15 @@ document.addEventListener('DOMContentLoaded', async(e) => {
                 formData.append('lente_term_id', sessionStorage.getItem('lente_term_id'));
                 (sessionStorage.getItem('codigo_lente') !== null) ? formData.append('codigo_exists', sessionStorage.getItem('codigo_lente')): '';
 
+                let codigo_lente = formData.get('codigo_lente_term');
+
                 let btnSaveStockLenteTerms = document.getElementById('btnSaveStockLenteTerms');
                 btnSaveStockLenteTerms.disabled = true;
                 axios.post(route('lente.term.ingreso'), formData)
                     .then((response) => {
                         if (response.data.status === 'success') {
+                            stock_codigos_update.push(codigo_lente);
+                            sessionStorage.setItem('stock_codigos_update', JSON.stringify(stock_codigos_update));
                             getLentesTerminados();
                             $("#modal-stock-lente-term").modal('hide');
                             formIngLenteTerm.reset();
@@ -288,6 +293,7 @@ function createTabLenteTerminados(data) {
                         precio_venta = parseFloat(searchLenteTerm.precio_venta).toFixed(2);
                         stock_actual = parseInt(searchLenteTerm.stock);
                     }
+
                     tableHTML += `<td class="td-stock-inv" title="Esf: ${val_esf} * Cil: ${val_cil}" onclick="addLenteTerm(this)" data-id="${element.id}" data-stock_actual="${stock_actual}" data-codigo="${codigo}" data-precio_costo="${precio_costo}" data-precio_venta="${precio_venta}" data-marca="${element.marca}" data-diseno="${element.diseno}" data-nombre="${element.nombre}" data-esfera="${val_esf}" data-cilindro="${val_cil}" style="border: 1px solid #dee2e6;color: #000;cursor:pointer;">${stock_actual}</td>`;
 
                     if (parseFloat(val_cil) === parseFloat(cil_desde)) {
@@ -307,6 +313,11 @@ function createTabLenteTerminados(data) {
         });
         setTimeout(() => {
             activeTabPanel();
+            //Marca las celdas que se actualizaron
+            /** let stock_codigos = (JSON.parse(sessionStorage.getItem('stock_codigos_update')) !== null) ? JSON.parse(sessionStorage.getItem('stock_codigos_update')) : [];
+            stock_codigos.forEach((codigo) => {
+                activeCellStockUpdate('bg-success', codigo);
+            }); **/
         }, 100);
     }
 }
@@ -422,4 +433,11 @@ function generarCodigo() {
         numerosDisponibles.splice(indice, 1); // Remover el número usado
     }
     return anioMes + codigoAleatorio;
+}
+
+function activeCellStockUpdate(className, elementId) {
+    console.log(document.querySelector(`data-codigo="${elementId}"`));
+    if (!document.getElementById(elementId).classList.contains(className)) {
+        document.getElementById(elementId).classList.add(className);
+    }
 }
