@@ -14,6 +14,7 @@
 @endsection
 @section('content')
     @include('Modulos.Inventario.modal.nuevo_lente_roto')
+    @include('Modulos.Inventario.modal.nueva_justify_lente_roto')
     <div class="card p-1 m-0">
         <div class="card-header p-1">
             <button id="btn_lente_roto" class="btn btn-outline-success btn-sm">Lente roto <i
@@ -27,10 +28,10 @@
                         <th style="text-align:center">#</th>
                         <th style="text-align:center">Código</th>
                         <th style="text-align:center">Fecha</th>
-                        <th style="text-align:center">Daño por</th>
                         <th style="text-align:center">Cantidad</th>
                         <th style="text-align:center">Especificaciones</th>
                         <th style="text-align:center">Justificación</th>
+                        <th style="text-align:center">Categoria</th>
                         <th style="text-align:center">Realizado por</th>
                         <th style="text-align:center">Acciones</th>
                     </tr>
@@ -43,4 +44,5 @@
 
 @push('scripts')
     <script src="{{ asset('app/modules/inventario/lentes_rotos.js') }}?v={{ rand() }}"></script>
+    <script src="{{ asset('app/modules/inventario/justify_lente_roto.js') }}?v={{ rand() }}"></script>
 @endpush

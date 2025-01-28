@@ -250,8 +250,8 @@ function createTabLenteTerminados(data) {
             let cil_hasta = parseFloat(element.cil_hasta);
 
             let tableHTML = `
-                    <table style="width:100%;border-collapse: collapse;text-align:center;font-size: 13px">
-                        <thead style="background:#011;color: #ffffff">
+                    <table class="table-hover" style="width:100%;border-collapse: collapse;text-align:center;font-size: 13px">
+                        <thead style="background:#343a40;color: #ffffff">
                             <tr>
                                 <th style="border: 1px solid rgb(155, 148, 148);width:5%">Esf/Cil</th>
             `;
@@ -274,7 +274,7 @@ function createTabLenteTerminados(data) {
                     let val_cil = (parseFloat(cil) > 0) ? '+' + cil.toFixed(2) : cil.toFixed(2);
 
                     if (parseFloat(val_cil) === cil_hasta) {
-                        tableHTML += `<tr><th style="border: 1px solid rgb(155, 148, 148);background:#012970;color: #ffffff">${val_esf}</th>`;
+                        tableHTML += `<tr><th style="border: 1px solid rgb(155, 148, 148);background:#22609f;color: #ffffff">${val_esf}</th>`;
                     }
                     let stocks = element.stocks;
                     let searchLenteTerm = stocks.find((stock) => parseFloat(stock.esfera) === parseFloat(val_esf) && parseFloat(stock.cilindro) === parseFloat(val_cil));
@@ -288,7 +288,7 @@ function createTabLenteTerminados(data) {
                         precio_venta = parseFloat(searchLenteTerm.precio_venta).toFixed(2);
                         stock_actual = parseInt(searchLenteTerm.stock);
                     }
-                    tableHTML += `<td onclick="addLenteTerm(this)" data-id="${element.id}" data-stock_actual="${stock_actual}" data-codigo="${codigo}" data-precio_costo="${precio_costo}" data-precio_venta="${precio_venta}" data-marca="${element.marca}" data-diseno="${element.diseno}" data-nombre="${element.nombre}" data-esfera="${val_esf}" data-cilindro="${val_cil}" style="border: 1px solid rgb(155, 148, 148);color: #000;">${stock_actual}</td>`;
+                    tableHTML += `<td class="td-stock-inv" title="Esf: ${val_esf} * Cil: ${val_cil}" onclick="addLenteTerm(this)" data-id="${element.id}" data-stock_actual="${stock_actual}" data-codigo="${codigo}" data-precio_costo="${precio_costo}" data-precio_venta="${precio_venta}" data-marca="${element.marca}" data-diseno="${element.diseno}" data-nombre="${element.nombre}" data-esfera="${val_esf}" data-cilindro="${val_cil}" style="border: 1px solid #dee2e6;color: #000;cursor:pointer;">${stock_actual}</td>`;
 
                     if (parseFloat(val_cil) === parseFloat(cil_desde)) {
                         tableHTML += `</tr>`;

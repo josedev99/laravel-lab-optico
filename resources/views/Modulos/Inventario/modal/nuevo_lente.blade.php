@@ -16,19 +16,19 @@
                 <div class="card-body p-1">
                         <div class="row">
                             <div class="col-sm-12 col-md-12">
-                                <div class="content-input">
+                                <div class="content-input mb-2">
                                     <input type="text" name="nombre_lente" title="nombre" placeholder=" " class="input mayus">
                                     <label class="input-label">Nombre</label>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-6">
-                                <div class="content-input">
+                                <div class="content-input mb-2">
                                     <input type="text" name="marca_lente" title="marca" placeholder=" " class="input mayus">
                                     <label class="input-label">Marca</label>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-6">
-                                <div class="content-input">
+                                <div class="content-input mb-2">
                                     <input type="text" name="diseno_lente" title="diseño" placeholder=" " class="input mayus">
                                     <label class="input-label">Diseño</label>
                                 </div>
@@ -39,7 +39,7 @@
                                     <div class="card-header p-0 text-center" style="font-size: 13px;font-weight: 700;">
                                         <label for="">Esferas</label>
                                     </div>
-                                    <div class="card-body p-0">
+                                    <div class="card-body p-2">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="content-input">
@@ -62,7 +62,7 @@
                                     <div class="card-header p-0 text-center" style="font-size: 13px;font-weight: 700;">
                                         <label for="">Cilindros</label>
                                     </div>
-                                    <div class="card-body p-0">
+                                    <div class="card-body p-2">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="content-input">

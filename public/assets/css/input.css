@@ -1,7 +1,6 @@
 .content-input {
     position: relative;
     width: auto;
-    margin: 8px 0px;
     display: grid;
     grid-template-areas: "input"
 }
@@ -35,7 +34,7 @@
 }
 
 .input:where(:focus, :not(:placeholder-shown))+.input-label {
-    transform: translateY(-100%) translateX(-10%) scale(.9);
+    transform: translateY(-90%) translateX(-10%) scale(.9);
     background-color: #fff;
     color: #1864c9;
     font-size: 14px;
@@ -74,4 +73,36 @@
 
 .p-icon {
     padding: .4rem 3.1rem .4rem .5rem;
+}
+
+
+/**
+Selectize title
+**/
+
+.select-title {
+    position: absolute;
+    z-index: 2;
+    font-size: 13px;
+    color: #1864c9;
+    font-weight: 700;
+    top: -30%;
+    left: 10px;
+    background-color: #fff;
+}
+
+.select-icon {
+    height: 38px;
+    width: 38px;
+    background: #f6f9ff;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid #ced4da;
+    border-bottom: 1px solid #ced4da;
+    border-right: 1px solid #ced4da;
+    font-size: 20px;
+    color: #188355;
 }

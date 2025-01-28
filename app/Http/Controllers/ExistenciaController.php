@@ -23,7 +23,7 @@ class ExistenciaController extends Controller
             DB::beginTransaction();
             //validar si codigo exists es igual a codigo form input
             $valid_codigo = ($codigo_exists != "") ? $codigo_exists : $codigo;
-            $stock_actual = Existencia::where('codigo',$valid_codigo)->where('lente_term_id',$lente_term_id)->first();
+            $stock_actual = Existencia::where('codigo',$valid_codigo)->first();
 
             if($stock_actual){
                 if($stock_actual['codigo'] == $codigo_exists){

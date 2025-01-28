@@ -12,6 +12,13 @@
     </nav>
   </div><!-- End Page Title -->
 @endsection
+@push('style')
+<style>
+  .td-stock-inv:hover{
+    background: #c9e9e7 !important;
+  }
+</style>
+@endpush
 @section('content')
 @include('Modulos.Inventario.modal.nuevo_lente')
 @include('Modulos.Inventario.modal.ing_stock_lente_term')

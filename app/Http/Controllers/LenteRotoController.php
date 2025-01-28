@@ -44,7 +44,7 @@ class LenteRotoController extends Controller
 
         $cantidad_lente = request()->get('cantidad_lente');
         $justif = request()->get('justif');
-        $observaciones = request()->get('observaciones');
+        $observaciones = !is_null(request()->get('observaciones')) ? request()->get('observaciones') : '-';
         $lente_id = request()->get('tipo_lente');
         $tipo = request()->get('checkOptions');
 

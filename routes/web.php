@@ -5,6 +5,7 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ExistenciaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventarioController;
+use App\Http\Controllers\JustifyLenteRotoController;
 use App\Http\Controllers\LenteRotoController;
 use App\Http\Controllers\LenteTermController;
 use App\Http\Controllers\UserController;
@@ -32,6 +33,9 @@ Route::prefix('/inventario')->middleware('auth')->group(function(){
     //Listar lente rotos (Inventario)
     Route::post('/listar-lentes-roto', [LenteRotoController::class, 'listar_lentes_rotos'])->name('lente.roto.listar');
     Route::post('/eliminar-lente-roto', [LenteRotoController::class, 'removeLenteRoto'])->name('lente.roto.remove');
+    //Routas para lente rotos
+    Route::post('/nueva-justificacion-lente-roto', [JustifyLenteRotoController::class, 'save'])->name('justify.lente.roto.save');
+    Route::post('/obtener-justificacion-lente-roto', [JustifyLenteRotoController::class, 'getJustifyLenteRoto'])->name('justify.lente.roto.obtener');
 });
 
 Route::prefix('/usuario')->middleware('auth')->group(function(){

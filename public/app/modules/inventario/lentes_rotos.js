@@ -204,3 +204,42 @@ function removeLenteRoto(element) {
         }
     });
 }
+
+//Handle event change options
+
+try {
+    let optionsCheckCateg = document.querySelectorAll('input[name="checkOptions"]');
+    optionsCheckCateg.forEach((option) => {
+        option.addEventListener('click', (event) => {
+            axios.post(route('justify.lente.roto.obtener'), { categoria: event.target.value })
+                .then((response) => {
+                    addOptionJustifySelect(response.data.data);
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+        })
+    })
+} catch (err) {
+    console.log(err);
+}
+
+function addOptionJustifySelect(data) {
+    let selectize_justify = $("#justif")[0].selectize;
+    selectize_justify.clear();
+    selectize_justify.clearOptions();
+    if (data.length > 0) {
+        data.forEach((item) => {
+            selectize_justify.addOption({
+                value: item.justificacion,
+                text: item.justificacion
+            })
+        })
+    } else {
+        selectize_justify.addOption({
+            value: "",
+            text: "Sin resultados",
+            disabled: true
+        });
+    }
+}
