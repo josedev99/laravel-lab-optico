@@ -83,7 +83,7 @@ class LenteRotoController extends Controller
     }
 
     public function listar_lentes_rotos(){
-        $datos = DB::select("select lr.id,lr.codigo,lr.fecha,lr.hora,lr.tipo,lr.cantidad,concat(l.nombre,' ',l.marca,' ',l.diseno,' - ',trim(lr.especificaciones)) as especificaciones,lr.justificacion,u.nombre from lente_rotos as lr inner join lente_terms as l on lr.lente_id=l.id inner join users as u on lr.usuario_id=u.id order by lr.id desc;");
+        $datos = DB::select("select lr.id,lr.codigo,lr.fecha,lr.hora,lr.tipo,lr.cantidad,concat(l.nombre,' ',l.marca,' ',l.diseno,' - ',trim(lr.especificaciones)) as especificaciones,lr.justificacion,u.nombre from lente_rotos as lr inner join lente_terms as l on lr.lente_id=l.id inner join users as u on lr.usuario_id=u.id order by lr.id asc;");
 
         $contador = 1;
         $data = [];

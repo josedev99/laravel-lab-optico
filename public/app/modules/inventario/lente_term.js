@@ -1,4 +1,3 @@
-var stock_codigos_update = [];
 document.addEventListener('DOMContentLoaded', async(e) => {
     try {
         getLentesTerminados();
@@ -176,8 +175,7 @@ document.addEventListener('DOMContentLoaded', async(e) => {
                 axios.post(route('lente.term.ingreso'), formData)
                     .then((response) => {
                         if (response.data.status === 'success') {
-                            stock_codigos_update.push(codigo_lente);
-                            sessionStorage.setItem('stock_codigos_update', JSON.stringify(stock_codigos_update));
+                            sessionStorage.setItem('stock_codigo_update', codigo_lente);
                             getLentesTerminados();
                             $("#modal-stock-lente-term").modal('hide');
                             formIngLenteTerm.reset();
@@ -294,7 +292,7 @@ function createTabLenteTerminados(data) {
                         stock_actual = parseInt(searchLenteTerm.stock);
                     }
 
-                    tableHTML += `<td class="td-stock-inv" title="Esf: ${val_esf} * Cil: ${val_cil}" onclick="addLenteTerm(this)" data-id="${element.id}" data-stock_actual="${stock_actual}" data-codigo="${codigo}" data-precio_costo="${precio_costo}" data-precio_venta="${precio_venta}" data-marca="${element.marca}" data-diseno="${element.diseno}" data-nombre="${element.nombre}" data-esfera="${val_esf}" data-cilindro="${val_cil}" style="border: 1px solid #dee2e6;color: #000;cursor:pointer;">${stock_actual}</td>`;
+                    tableHTML += `<td class="td-stock-inv" title="Esf: ${val_esf} * Cil: ${val_cil}" onclick="addLenteTerm(this)" data-id="${element.id}" id="cod-${codigo}" data-stock_actual="${stock_actual}" data-codigo="${codigo}" data-precio_costo="${precio_costo}" data-precio_venta="${precio_venta}" data-marca="${element.marca}" data-diseno="${element.diseno}" data-nombre="${element.nombre}" data-esfera="${val_esf}" data-cilindro="${val_cil}" style="border: 1px solid #dee2e6;color: #000;cursor:pointer;">${stock_actual}</td>`;
 
                     if (parseFloat(val_cil) === parseFloat(cil_desde)) {
                         tableHTML += `</tr>`;
@@ -314,10 +312,8 @@ function createTabLenteTerminados(data) {
         setTimeout(() => {
             activeTabPanel();
             //Marca las celdas que se actualizaron
-            /** let stock_codigos = (JSON.parse(sessionStorage.getItem('stock_codigos_update')) !== null) ? JSON.parse(sessionStorage.getItem('stock_codigos_update')) : [];
-            stock_codigos.forEach((codigo) => {
-                activeCellStockUpdate('bg-success', codigo);
-            }); **/
+            let stock_codigo = (sessionStorage.getItem('stock_codigo_update') !== null) ? 'cod-' + sessionStorage.getItem('stock_codigo_update') : '';
+            activeCellStockUpdate('active-cell', stock_codigo);
         }, 100);
     }
 }
@@ -436,8 +432,9 @@ function generarCodigo() {
 }
 
 function activeCellStockUpdate(className, elementId) {
-    console.log(document.querySelector(`data-codigo="${elementId}"`));
-    if (!document.getElementById(elementId).classList.contains(className)) {
-        document.getElementById(elementId).classList.add(className);
+    if (document.querySelector(`#${elementId}`)) {
+        if (!document.getElementById(elementId).classList.contains(className)) {
+            document.getElementById(elementId).classList.add(className);
+        }
     }
 }

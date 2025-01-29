@@ -20,6 +20,10 @@
   .td-stock-inv:hover{
     background: #c9e9e7 !important;
   }
+  .active-cell{
+    background: #25d6cb;
+    color: #fff;
+  }
 </style>
     <div class="card p-1 m-0">
         <div class="card-header p-1">
