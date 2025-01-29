@@ -1,18 +1,4 @@
-<style>
-    .mayus {
-        text-transform: uppercase;
-    }
 
-    .selectize-input {
-        border-bottom-left-radius: 5px !important;
-        border-start-start-radius: 5px !important;
-        box-shadow: none !important;
-    }
-
-    .selectize-input.focus {
-        border: 2px solid #1a73e8;
-    }
-</style>
 <div class="modal fade" id="modal-lente-roto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">

@@ -1,9 +1,16 @@
 var productos = [];
+var cart_productos = [];
 
 document.addEventListener('DOMContentLoaded', () => {
     try {
-        getClientes();
+        //getClientes();
         getProductosAll();
+        //selectize asesor
+        $("#cliente_venta").selectize();
+        $("#paciente_venta").selectize();
+        $("#asesor_venta").selectize();
+        $("#tipo_venta").selectize();
+        $("#forma_pago").selectize();
 
         //handle event change input producto
         let iSearchProduct = document.getElementById('input_search_product')
@@ -19,20 +26,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function filtrarProduct(stringValue) {
     const regex = new RegExp(stringValue, 'gi');
-    let product_filtrado = productos.filter((producto) => regex.test(producto.codigo));
+    let product_filtrado = productos.filter((producto) => regex.test(producto.codigo) || regex.test(producto.descripcion));
 
     let component_list_product = document.getElementById('component_list_product');
-    if (product_filtrado.length > 0) {
+    component_list_product.innerHTML = '';
+    if (product_filtrado.length > 0 && stringValue !== "") {
         component_list_product.innerHTML = ``;
         let table = document.createElement('table');
         product_filtrado.forEach((item, index) => {
-            let row = `<tr class="text-center">
+            let row = `<tr class="text-center tr-hover">
                     <td>${index + 1}</td>
                     <td>${item.codigo}</td>
-                    <td>${item.nombre} ${item.marca} ${item.diseno} (esfera: ${item.esfera}, cilindro: ${item.cilindro})</td>
+                    <td>${item.descripcion}</td>
                     <td><b>Stock: ${item.stock}</b></td>
                     <td><b>$${parseFloat(item.precio_venta).toFixed(2)}</b></td>
-                    <td><button type="button" class="btn btn-outline-success btn-sm" style="border: none;"><i class="bi bi-plus-circle"></i></button></td>
+                    <td><button onclick="addItemVenta(this)" data-codigo="${item.codigo}" type="button" class="btn btn-outline-success btn-sm" style="border: none;"><i class="bi bi-plus-circle"></i></button></td>
                 </tr>`;
             table.innerHTML += row;
         })
@@ -70,4 +78,15 @@ function getProductosAll() {
         }).catch((err) => {
             console.log(err)
         })
+}
+
+function addItemVenta(element) {
+    let codigo = element.dataset.codigo;
+    let index = productos.findIndex((product) => product.codigo == codigo);
+    console.log(index);
+    if (index !== -1) {
+        let product = productos[index];
+        product.stock = 1;
+        cart_productos.push(product);
+    }
 }
