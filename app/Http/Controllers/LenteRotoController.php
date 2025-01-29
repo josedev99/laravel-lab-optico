@@ -92,9 +92,9 @@ class LenteRotoController extends Controller
             $sub_array[] = $contador;
             $sub_array[] = $row->codigo;
             $sub_array[] = date('d/m/Y H:i:s A',strtotime($row->fecha . '' . $row->hora));
-            $sub_array[] = $row->tipo;
             $sub_array[] = $row->cantidad;
             $sub_array[] = $row->especificaciones;
+            $sub_array[] = $row->tipo;
             $sub_array[] = $row->justificacion;
             $sub_array[] = $row->nombre;
             $sub_array[] = '

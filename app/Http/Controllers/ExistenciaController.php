@@ -71,7 +71,7 @@ class ExistenciaController extends Controller
             if($result){
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'El lente terminado se ha ingresado exitosamente.'
+                    'message' => 'Se han ingresado '.$cantidad.' lentes terminados exitosamente.'
                 ]);
             }
             return response()->json([
