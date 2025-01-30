@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', async(e) => {
         if (btnGenCodeAleatorio) {
             btnGenCodeAleatorio.addEventListener('click', (e) => {
                 document.getElementById('new_code_lente').value = generarCodigo();
+                document.getElementById('btnGenCode').click(); //submit form
                 e.stopPropagation();
             })
         }

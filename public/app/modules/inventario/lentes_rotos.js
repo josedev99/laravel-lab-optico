@@ -8,6 +8,29 @@ document.addEventListener('DOMContentLoaded', () => {
     //Call datatable lentes rotos
     dataTable('dt-lentes-rotos', route('lente.roto.listar'));
 
+    //Nueva jjustificacion de lente roto
+    let addItemJustify = document.getElementById('add-item-justify');
+    if (addItemJustify) {
+        addItemJustify.addEventListener('click', (e) => {
+            let optionReporte = document.querySelector('input[name="checkOptions"]:checked');
+            if (optionReporte === null) {
+                Swal.fire({
+                    title: "Aviso",
+                    text: 'Por favor, selecciona la categoria para el lente roto.',
+                    icon: "warning"
+                });
+                return;
+            }
+            if (optionReporte.value === "Bodega") {
+                document.getElementById('addCheckBodega').checked = true;
+            } else if (optionReporte.value === "Montaje") {
+                document.getElementById('addCheckMontaje').checked = true;
+            }
+
+            $("#modal-justify-lente-roto").modal('show');
+            e.stopPropagation();
+        })
+    }
     //Button open modal
     let btnLenteRoto = document.getElementById('btn_lente_roto');
     if (btnLenteRoto) {
@@ -27,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (optionReporte === null) {
                 Swal.fire({
                     title: "Aviso",
-                    text: 'Por favor, elige el tipo de daño para el lente roto.',
+                    text: 'Por favor, selecciona la categoria para el lente roto.',
                     icon: "warning"
                 });
                 return;

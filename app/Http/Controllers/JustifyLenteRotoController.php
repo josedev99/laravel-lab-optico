@@ -12,6 +12,15 @@ class JustifyLenteRotoController extends Controller
         $usuario_id = Auth::user()->id;
         $categoria = request()->get('checkCatLenteRoto');
         $justificacion = trim(request()->get('justify_lente_roto'));//strtoupper
+        //validar registros unicos
+        $exists = JustifyLenteRoto::where('categoria',$categoria)->where('justificacion', $justificacion)->exists();
+        if($exists){
+            return response()->json([
+                'status' => 'error',
+                'message' => 'La justificación para el lente roto ya ha sido registrada.',
+                'data' => []
+            ]);
+        }
         $result = JustifyLenteRoto::create([
             'categoria' => $categoria,
             'justificacion' => $justificacion,

@@ -1,12 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    //Nueva jjustificacion de lente roto
-    let addItemJustify = document.getElementById('add-item-justify');
-    if (addItemJustify) {
-        addItemJustify.addEventListener('click', (e) => {
-            $("#modal-justify-lente-roto").modal('show');
-            e.stopPropagation();
-        })
-    }
     let formJustifyLenteRoto = document.getElementById('form-justify-lente-roto');
     if (formJustifyLenteRoto) {
         formJustifyLenteRoto.addEventListener('submit', (e) => {
