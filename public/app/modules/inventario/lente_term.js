@@ -231,12 +231,11 @@ function createTabLenteTerminados(data) {
             let accordionItem = document.createElement('div');
             accordionItem.classList.add('accordion-item');
             accordionItem.style.boxShadow = '0px 0px 4px rgba(0, 0, 0, 0.1)';
-            accordionItem.style.padding = '2px 15px';
             accordionItem.style.borderRadius = '6px';
             accordionItem.style.marginBottom = '4px';
 
             accordionItem.innerHTML = `
-                <h2 class="accordion-header d-flex justify-content-center align-items-center" id="${bordered_tab}">
+                <h2 class="accordion-header d-flex justify-content-center align-items-center" id="${bordered_tab}" style="padding:2px 15px;border-bottom: 1px solid #ebeef4;">
                 <i onclick="editTableTerms(this)" data-id="${element.id}" class="bi bi-pencil-square text-info" title="Editar tabla" style="font-size: 18px;margin-right: 2px;cursor:pointer"></i>
                 <button onclick="setActivePanel(this)" data-tabla_id="${element.id}" id="${accordion_btn}" data-accordion_body_id="${element_tab}" class="accordion-button collapsed p-2" type="button" data-bs-toggle="collapse" data-bs-target="#${element_tab}" aria-expanded="false" aria-controls="${element_tab}" style="font-size: 14px;font-weight: 600;">
                 ${element.nombre} ${element.marca} ${element.diseno}
